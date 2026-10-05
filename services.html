@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Services | Stackly Logistics</title>
+  <meta name="description" content="Explore Stackly Logistics' full suite of freight services – ocean, air, road, cold chain, warehousing, customs clearance, and supply chain consulting." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    [data-reveal]{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
+    [data-reveal].visible{opacity:1;transform:none}
+    [data-reveal="left"]{transform:translateX(-36px)}[data-reveal="left"].visible{transform:none}
+    [data-reveal="right"]{transform:translateX(36px)}[data-reveal="right"].visible{transform:none}
+    [data-reveal="scale"]{transform:scale(.92)}[data-reveal="scale"].visible{transform:none}
+    .d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}.d5{transition-delay:.5s!important}
+    .page-hero{min-height:72vh;position:relative;display:flex;align-items:center;overflow:hidden}
+    .page-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .page-hero-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,31,53,.9) 0%,rgba(13,31,53,.5) 100%)}
+    .page-hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:140px 24px 80px;width:100%}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.55);margin-bottom:20px}
+    .breadcrumb a{color:#2dd4bf}
+    .pg-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.3);color:#2dd4bf;font-size:13px;font-weight:600;padding:6px 16px;border-radius:50px;margin-bottom:20px}
+    .page-hero h1{font-family:'Outfit',sans-serif;font-size:clamp(36px,6vw,70px);font-weight:900;color:#fff;line-height:1.08;letter-spacing:-2px;margin-bottom:20px;max-width:680px}
+    .page-hero h1 em{color:#2dd4bf;font-style:normal}
+    .page-hero .hero-sub{font-size:17px;color:rgba(255,255,255,.72);line-height:1.8;max-width:540px}
+    .slbl{display:inline-flex;align-items:center;gap:8px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);color:#0f9484;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:50px;margin-bottom:16px}
+    .stitle{font-family:'Outfit',sans-serif;font-size:clamp(26px,3.8vw,46px);font-weight:800;color:#0d1f35;letter-spacing:-1px;line-height:1.15;margin-bottom:14px}
+    .stitle em{color:#0f9484;font-style:normal}
+    .ssub{font-size:16px;color:#6b7280;line-height:1.75;max-width:560px}
+
+    /* ── Services Grid ── */
+    .srv-sec{padding:100px 0;background:#f8fffe}
+    .srv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:20px}
+    .srv-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(13,31,53,.08);border:1px solid #e5e7eb;transition:transform .35s ease,box-shadow .35s ease}
+    .srv-card:hover{transform:translateY(-8px);box-shadow:0 16px 48px rgba(13,31,53,.14)}
+    .srv-img{width:100%;height:196px;object-fit:cover;display:block}
+    .srv-body{padding:26px}
+    .srv-ico{width:44px;height:44px;background:linear-gradient(135deg,rgba(45,212,191,.16),rgba(45,212,191,.04));border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+    .srv-body h3{font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:#0d1f35;margin-bottom:8px}
+    .srv-body p{font-size:13px;color:#6b7280;line-height:1.7;margin-bottom:16px}
+    .srv-lnk{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:#0f9484;transition:gap .2s}
+    .srv-lnk:hover{gap:9px}
+
+    /* ── How It Works ── */
+    .how-sec{padding:100px 0;background:#1a2e44}
+    .how-sec .stitle{color:#fff}
+    .how-sec .ssub{color:rgba(255,255,255,.6)}
+    .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px}
+    .how-step{text-align:center;position:relative}
+    .how-step::after{content:'→';position:absolute;right:-14px;top:18px;color:rgba(45,212,191,.4);font-size:22px}
+    .how-step:last-child::after{display:none}
+    .step-num{width:60px;height:60px;background:linear-gradient(135deg,#2dd4bf,#0f9484);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:#0d1f35;margin:0 auto 18px}
+    .how-step h4{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+    .how-step p{font-size:13px;color:rgba(255,255,255,.58);line-height:1.7}
+
+    /* ── Industries ── */
+    .ind-sec{padding:100px 0;background:#fff}
+    .ind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-radius:16px;overflow:hidden;box-shadow:0 16px 48px rgba(13,31,53,.14);margin-top:56px}
+    .ind-card{position:relative;min-height:300px;display:flex;align-items:flex-end;cursor:pointer;overflow:hidden}
+    .ind-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+    .ind-card:hover img{transform:scale(1.06)}
+    .ind-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,31,53,.85) 0%,transparent 60%)}
+    .ind-txt{position:relative;z-index:2;padding:28px}
+    .ind-txt h3{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
+    .ind-txt p{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6}
+
+    /* ── Stats ── */
+    .stats-sec{padding:76px 0;background:linear-gradient(135deg,#0d1f35 0%,#1a3a5c 100%)}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+    .stat-it{text-align:center}
+    .stat-n{font-family:'Outfit',sans-serif;font-size:clamp(38px,4.5vw,60px);font-weight:900;color:#2dd4bf;line-height:1;margin-bottom:8px}
+    .stat-l{font-size:14px;color:rgba(255,255,255,.62);font-weight:500}
+
+    /* ── Technology ── */
+    .tech-sec{padding:100px 0;background:#f8fffe}
+    .tech-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+    .tech-wrap{position:relative;border-radius:16px;overflow:hidden}
+    .tech-wrap img{width:100%;height:460px;object-fit:cover;display:block}
+    .tech-badge{position:absolute;bottom:22px;left:22px;background:rgba(13,31,53,.9);backdrop-filter:blur(12px);border:1px solid rgba(45,212,191,.3);border-radius:12px;padding:14px 18px;color:#fff}
+    .tech-badge strong{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:#2dd4bf}
+    .tech-badge span{font-size:12px;display:block;color:rgba(255,255,255,.58)}
+    .feats{display:flex;flex-direction:column;gap:16px;margin-top:28px}
+    .feat{display:flex;align-items:flex-start;gap:14px;padding:18px;background:#fff;border-radius:12px;border:1px solid #e5e7eb;transition:border-color .3s,box-shadow .3s}
+    .feat:hover{border-color:#2dd4bf;box-shadow:0 4px 20px rgba(45,212,191,.1)}
+    .feat-ico{width:42px;height:42px;flex-shrink:0;background:linear-gradient(135deg,rgba(45,212,191,.16),rgba(45,212,191,.04));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+    .feat h5{font-size:14px;font-weight:700;color:#0d1f35;margin-bottom:3px}
+    .feat p{font-size:13px;color:#6b7280;line-height:1.6}
+
+    /* ── Testimonials ── */
+    .testi-sec{padding:100px 0;background:#fff}
+    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px}
+    .tc{padding:28px;border-radius:16px;border:1px solid #e5e7eb;background:#f8fffe;transition:transform .3s,box-shadow .3s}
+    .tc:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(13,31,53,.12)}
+    .tc-stars{color:#f59e0b;font-size:14px;margin-bottom:14px}
+    .tc-text{font-size:14px;color:#374151;line-height:1.75;margin-bottom:20px}
+    .tc-auth{display:flex;align-items:center;gap:10px}
+    .tc-av{width:42px;height:42px;border-radius:50%;object-fit:cover}
+    .tc-name{font-weight:700;font-size:13px;color:#0d1f35}
+    .tc-role{font-size:12px;color:#6b7280}
+
+    /* ── CTA ── */
+    .cta-sec{padding:96px 0;background:linear-gradient(135deg,#0f9484 0%,#0a7060 100%);text-align:center}
+    .cta-sec h2{font-family:'Outfit',sans-serif;font-size:clamp(28px,4.5vw,52px);font-weight:900;color:#fff;letter-spacing:-1.5px;margin-bottom:14px}
+    .cta-sec p{font-size:16px;color:rgba(255,255,255,.8);margin-bottom:36px;line-height:1.7}
+    .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .btn-wh{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0f9484;font-weight:700;font-size:15px;padding:14px 30px;border-radius:50px;transition:all .3s}
+    .btn-wh:hover{background:#0d1f35;color:#fff;transform:translateY(-2px)}
+    .btn-owh{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;font-weight:600;font-size:15px;padding:14px 30px;border-radius:50px;border:2px solid rgba(255,255,255,.5);transition:all .3s}
+    .btn-owh:hover{background:rgba(255,255,255,.15);border-color:#fff}
+
+    /* ── Footer ── */
+    .footer{background:#0a1929;padding:76px 0 0;color:rgba(255,255,255,.7)}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .footer-brand p{font-size:14px;line-height:1.8;margin:14px 0 22px}
+    .footer-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+    .fcol h5{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:18px}
+    .fcol ul{display:flex;flex-direction:column;gap:9px}
+    .fcol ul li a{font-size:13px;color:rgba(255,255,255,.58);transition:color .2s}
+    .fcol ul li a:hover{color:#2dd4bf}
+    .fcol ul li{font-size:13px}
+    .soc-links{display:flex;gap:8px}
+    .soc-btn{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.7);transition:all .2s}
+    .soc-btn:hover{background:#2dd4bf;color:#0d1f35;border-color:#2dd4bf}
+    .footer-bot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:22px 0;font-size:13px}
+    .f-legal{display:flex;gap:18px}
+    .f-legal a{color:rgba(255,255,255,.45);transition:color .2s}
+    .f-legal a:hover{color:#2dd4bf}
+
+    @media(max-width:1024px){.srv-grid{grid-template-columns:repeat(2,1fr)}.how-grid{grid-template-columns:repeat(2,1fr)}.how-step::after{display:none}.tech-inner{grid-template-columns:1fr;gap:44px}.tech-wrap img{height:300px}.testi-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}}
+    @media(max-width:768px){.srv-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.ind-grid{grid-template-columns:1fr}.testi-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.footer-bot{flex-direction:column;text-align:center}}
+    @media(max-width:480px){.how-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:1fr}.cta-btns{flex-direction:column;align-items:center}}
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="logo-link">
+        <img src="images/Logo.webp" alt="Stackly Logistics" class="logo-img" />
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link active">Services</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="contact.html" class="nav-link">Contact Us</a></li>
+      </ul>
+      <a href="login.html" class="btn-cta nav-cta" id="nav-cta-btn">Login <span class="btn-icon">&#8599;</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- 1. HERO -->
+  <section class="page-hero" id="srv-hero">
+    <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=85&auto=format&fit=crop" alt="Logistics warehouse operations" class="page-hero-img" loading="eager" />
+    <div class="page-hero-ov"></div>
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span style="color:rgba(255,255,255,.9)">Services</span></div>
+      <div class="pg-tag"><i class="fa-solid fa-bolt"></i> Full-Spectrum Logistics</div>
+      <h1>Freight Solutions Built for <em>Global Scale</em></h1>
+      <p class="hero-sub">From ocean cargo to last-mile delivery — Stackly Logistics handles every link in your supply chain with precision, speed, and technology-driven transparency.</p>
+    </div>
+  </section>
+
+  <!-- 2. SERVICES GRID -->
+  <section class="srv-sec" id="all-services">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:52px">
+        <div class="slbl" data-reveal><i class="fa-solid fa-boxes-stacked"></i> What We Offer</div>
+        <h2 class="stitle" data-reveal>End-to-End <em>Logistics Services</em></h2>
+        <p class="ssub" data-reveal style="margin:0 auto">Six core freight modes, one unified partner. We connect your cargo to the world.</p>
+      </div>
+      <div class="srv-grid">
+        <div class="srv-card d1" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&q=80&auto=format&fit=crop" alt="Ocean Freight" class="srv-img" loading="lazy" />
+          <div class="srv-body"><div class="srv-ico"><i class="fa-solid fa-ship"></i></div><h3>Ocean Freight (FCL/LCL)</h3><p>Full Container Load and Less-than-Container Load consolidated shipping with global maritime vessel charters. Competitive rates on 200+ trade lanes.</p><a href="contact.html" class="srv-lnk">Get a Quote &#8599;</a></div>
+        </div>
+        <div class="srv-card d2" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=600&q=80&auto=format&fit=crop" alt="Air Cargo" class="srv-img" loading="lazy" />
+          <div class="srv-body"><div class="srv-ico"><i class="fa-solid fa-plane"></i></div><h3>Air Cargo &amp; Express Freight</h3><p>Time-critical air freight charters, priority consolidated flights, and rapid airport-to-door transit around the clock with 98% on-time delivery.</p><a href="contact.html" class="srv-lnk">Get a Quote &#8599;</a></div>
+        </div>
+        <div class="srv-card d3" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop" alt="Road Transport" class="srv-img" loading="lazy" />
+          <div class="srv-body"><div class="srv-ico"><i class="fa-solid fa-truck-fast"></i></div><h3>Road Transport &amp; Trucking</h3><p>Modern GPS-tracked fleet offering Full Truckload (FTL), regional milk runs, and secure container haulage across India with real-time tracking.</p><a href="contact.html" class="srv-lnk">Get a Quote &#8599;</a></div>
+        </div>
+        <div class="srv-card d1" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80&auto=format&fit=crop" alt="Warehousing" class="srv-img" loading="lazy" />
+          <div class="srv-body"><div class="srv-ico"><i class="fa-solid fa-warehouse"></i></div><h3>Smart Warehousing &amp; 3PL</h3><p>Automated pallet storage, order fulfillment, pick &amp; pack, and real-time inventory management with cloud WMS integration and 24/7 monitoring.</p><a href="contact.html" class="srv-lnk">Get a Quote &#8599;</a></div>
+        </div>
+        <div class="srv-card d2" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1624969862644-791f3dc98927?w=600&q=80&auto=format&fit=crop" alt="Cold Chain" class="srv-img" loading="lazy" />
+          <div class="srv-body"><div class="srv-ico"><i class="fa-solid fa-snowflake"></i></div><h3>Cold Chain &amp; Perishables</h3><p>Temperature-controlled reefer containers and live thermal sensor monitoring for pharmaceuticals, agriculture, and fresh food with zero compromise.</p><a href="contact.html" class="srv-lnk">Get a Quote &#8599;</a></div>
+        </div>
+        <div class="srv-card d3" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop" alt="Customs" class="srv-img" loading="lazy" />
+          <div class="srv-body"><div class="srv-ico"><i class="fa-solid fa-file-contract"></i></div><h3>Customs Clearance &amp; Brokerage</h3><p>Seamless international documentation, tariff compliance, port clearances, and duty drawback support by IATA-licensed brokers with 20+ years experience.</p><a href="contact.html" class="srv-lnk">Get a Quote &#8599;</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HOW IT WORKS -->
+  <section class="how-sec" id="process">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="slbl" style="background:rgba(45,212,191,.2)" data-reveal><i class="fa-solid fa-gears"></i> Our Process</div>
+        <h2 class="stitle" style="color:#fff" data-reveal>Simple 4-Step <span style="color:#2dd4bf">Shipping Process</span></h2>
+        <p class="ssub" style="color:rgba(255,255,255,.6);margin:0 auto" data-reveal>From inquiry to delivery — fully transparent, fully managed by our expert team.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-step d1" data-reveal><div class="step-num">01</div><h4>Request a Quote</h4><p>Share your cargo details, origin, destination and timeline through our form or by calling our dispatch team directly.</p></div>
+        <div class="how-step d2" data-reveal><div class="step-num">02</div><h4>Route Planning</h4><p>Our logistics engineers design the most efficient multimodal route, choosing the best carriers and transit hubs for your cargo.</p></div>
+        <div class="how-step d3" data-reveal><div class="step-num">03</div><h4>Cargo Pickup</h4><p>Our GPS-tracked fleet collects your shipment on schedule. Packaging, labeling, and documentation handled by our team.</p></div>
+        <div class="how-step d4" data-reveal><div class="step-num">04</div><h4>On-Time Delivery</h4><p>Real-time tracking, customs clearance, and last-mile delivery — your cargo arrives safely, on time, every time.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. INDUSTRIES -->
+  <section class="ind-sec" id="industries">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="slbl" data-reveal><i class="fa-solid fa-industry"></i> Industries We Serve</div>
+        <h2 class="stitle" data-reveal>Logistics for <em>Every Industry</em></h2>
+        <p class="ssub" style="margin:0 auto" data-reveal>Specialized freight solutions tailored to the unique demands of your sector.</p>
+      </div>
+      <div class="ind-grid">
+        <div class="ind-card" data-reveal="left"><img src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&q=80&auto=format&fit=crop" alt="Automotive" loading="lazy" /><div class="ind-ov"></div><div class="ind-txt"><h3><i class="fa-solid fa-car"></i> Automotive</h3><p>JIT delivery, bonded transport, and plant-to-plant supply chain for OEMs and Tier-1 suppliers.</p></div></div>
+        <div class="ind-card" data-reveal="right"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80&auto=format&fit=crop" alt="Pharma" loading="lazy" /><div class="ind-ov"></div><div class="ind-txt"><h3><i class="fa-solid fa-pills"></i> Pharmaceuticals</h3><p>GDP-compliant cold chain, temperature monitoring, and controlled substance handling for global pharma companies.</p></div></div>
+        <div class="ind-card" data-reveal="left"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80&auto=format&fit=crop" alt="Retail" loading="lazy" /><div class="ind-ov"></div><div class="ind-txt"><h3><i class="fa-solid fa-cart-shopping"></i> Retail &amp; E-Commerce</h3><p>High-velocity fulfillment, returns management, and last-mile delivery for global retail brands.</p></div></div>
+        <div class="ind-card" data-reveal="right"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80&auto=format&fit=crop" alt="Agriculture" loading="lazy" /><div class="ind-ov"></div><div class="ind-txt"><h3><i class="fa-solid fa-wheat-awn"></i> Agriculture &amp; Food</h3><p>Fresh produce cold chain, reefer container shipping, and agri-export documentation across 90+ countries.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. STATS -->
+  <section class="stats-sec" id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-it d1" data-reveal><div class="stat-n">50K+</div><div class="stat-l">Shipments Delivered</div></div>
+        <div class="stat-it d2" data-reveal><div class="stat-n">120+</div><div class="stat-l">Countries Reached</div></div>
+        <div class="stat-it d3" data-reveal><div class="stat-n">98%</div><div class="stat-l">On-Time Delivery Rate</div></div>
+        <div class="stat-it d4" data-reveal><div class="stat-n">15+</div><div class="stat-l">Years of Excellence</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TECHNOLOGY -->
+  <section class="tech-sec" id="technology">
+    <div class="container">
+      <div class="tech-inner">
+        <div class="tech-wrap" data-reveal="left">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=85&auto=format&fit=crop" alt="Logistics Technology" loading="lazy" />
+          <div class="tech-badge"><strong>99.9%</strong><span>Platform Uptime</span></div>
+        </div>
+        <div data-reveal="right">
+          <div class="slbl"><i class="fa-solid fa-microchip"></i> Technology</div>
+          <h2 class="stitle">Powered by <em>Smart Logistics</em> Tech</h2>
+          <p class="ssub">Our proprietary TMS and WMS platforms give you end-to-end visibility, predictive analytics, and proactive exception management.</p>
+          <div class="feats">
+            <div class="feat"><div class="feat-ico"><i class="fa-solid fa-location-dot"></i></div><div><h5>Real-Time GPS Tracking</h5><p>Live shipment location updates every 5 minutes across all freight modes from pickup to delivery.</p></div></div>
+            <div class="feat"><div class="feat-ico"><i class="fa-solid fa-chart-line"></i></div><div><h5>Predictive Analytics Dashboard</h5><p>AI-driven insights to anticipate delays, optimize routes, and reduce logistics costs by up to 22%.</p></div></div>
+            <div class="feat"><div class="feat-ico"><i class="fa-solid fa-bell"></i></div><div><h5>Automated Alerts &amp; Notifications</h5><p>Instant SMS, email, and push notifications for every milestone in your shipment journey.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. TESTIMONIALS -->
+  <section class="testi-sec" id="testimonials">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="slbl" data-reveal><i class="fa-solid fa-star"></i> Client Reviews</div>
+        <h2 class="stitle" data-reveal>Trusted by <em>Industry Leaders</em></h2>
+      </div>
+      <div class="testi-grid">
+        <div class="tc d1" data-reveal><div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="tc-text">"Stackly's ocean freight service reduced our shipping costs by 18% while improving delivery reliability. Their team handles customs clearance seamlessly — we never worry about paperwork."</p><div class="tc-auth"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80&auto=format&fit=crop" alt="Rajiv Menon" class="tc-av" loading="lazy" /><div><div class="tc-name">Rajiv Menon</div><div class="tc-role">Supply Chain Head, TechParts India</div></div></div></div>
+        <div class="tc d2" data-reveal><div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="tc-text">"Our pharmaceutical cold chain requirements are extremely stringent. Stackly maintains perfect temperature logs and has never missed a delivery window in 3 years of partnership."</p><div class="tc-auth"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80&auto=format&fit=crop" alt="Priya Nair" class="tc-av" loading="lazy" /><div><div class="tc-name">Priya Nair</div><div class="tc-role">Logistics Director, MedCore Labs</div></div></div></div>
+        <div class="tc d3" data-reveal><div class="tc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="tc-text">"Stackly's 3PL warehousing transformed our e-commerce operations. Same-day order processing and WMS integration with our Shopify store was flawless from day one."</p><div class="tc-auth"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80&auto=format&fit=crop" alt="Arjun Singh" class="tc-av" loading="lazy" /><div><div class="tc-name">Arjun Singh</div><div class="tc-role">CEO, QuickCart Commerce</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CTA -->
+  <section class="cta-sec" id="cta">
+    <div class="container">
+      <div data-reveal>
+        <h2>Ready to Ship Smarter?</h2>
+        <p>Get a competitive freight quote in under 2 hours. Our logistics experts are available 24/7.</p>
+        <div class="cta-btns">
+          <a href="contact.html" class="btn-wh" id="srv-quote-btn">Get a Free Quote &#8599;</a>
+          <a href="tel:9876543210" class="btn-owh" id="srv-call-btn"><i class="fa-solid fa-phone"></i> Call Us Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo-row"><img src="images/Logo.webp" alt="Stackly Logistics" class="logo-img" /></div>
+          <p>Trusted global logistics and freight solutions based in Salem, Tamil Nadu, India. Delivering multimodal transportation, bonded warehousing, and supply chain excellence.</p>
+          <div class="soc-links"><a href="404.html" class="soc-btn" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a><a href="404.html" class="soc-btn" aria-label="in"><i class="fa-brands fa-linkedin-in"></i></a><a href="404.html" class="soc-btn" aria-label="web"><i class="fa-solid fa-globe"></i></a><a href="404.html" class="soc-btn" aria-label="ig"><i class="fa-brands fa-instagram"></i></a></div>
+        </div>
+        <div class="fcol"><h5>Quick Links</h5><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+        <div class="fcol"><h5>Freight Modes</h5><ul><li><a href="services.html">Ocean Freight</a></li><li><a href="services.html">Air Cargo</a></li><li><a href="services.html">Road Transport</a></li><li><a href="services.html">Cold Chain</a></li><li><a href="services.html">Warehousing</a></li></ul></div>
+        <div class="fcol"><h5>Logistics Hub</h5><ul><li>Salem, Tamil Nadu, India</li><li><a href="tel:9876543210"><i class="fa-solid fa-phone"></i> 9876543210</a></li><li><a href="mailto:contact@stackly.com"><i class="fa-solid fa-envelope"></i> contact@stackly.com</a></li><li>ISO 9001 &amp; IATA Accredited</li></ul></div>
+      </div>
+      <div class="footer-bot"><p>&copy; 2026 Stackly Logistics. All rights reserved.</p><div class="f-legal"><a href="404.html">Privacy Policy</a><a href="404.html">Terms &amp; Conditions</a></div></div>
+    </div>
+  </footer>
+
+  <script>
+    const nb=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
+    const hb=document.getElementById('hamburger'),nl=document.getElementById('nav-links');
+    hb.addEventListener('click',()=>{nl.classList.toggle('open');hb.classList.toggle('active');const s=hb.querySelectorAll('span');if(hb.classList.contains('active')){s[0].style.transform='rotate(45deg) translate(5px,5px)';s[1].style.opacity='0';s[2].style.transform='rotate(-45deg) translate(5px,-5px)'}else{s[0].style.transform=s[2].style.transform='';s[1].style.opacity=''}});
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}}),{threshold:.14});
+    document.querySelectorAll('[data-reveal]').forEach(el=>obs.observe(el));
+  </script>
+
+  <!-- Smart Nav: swap Login→Dashboard when logged in -->
+  <script>
+    (function(){
+      var user = sessionStorage.getItem('sl_user');
+      var cta = document.getElementById('nav-cta-btn');
+      if(user && cta){
+        cta.href = 'signout.html';
+        cta.innerHTML = '<i class="fa-solid fa-gauge"></i> Dashboard<span class="btn-icon">&#8599;</span>';
+      }
+    })();
+  </script>
+</body>
+</html>

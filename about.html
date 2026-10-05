@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | Stackly Logistics</title>
+  <meta name="description" content="Learn about Stackly Logistics – our story, mission, values, global team, milestones, certifications, and commitment to supply chain excellence since 2009." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    [data-reveal]{opacity:0;transform:translateY(36px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}
+    [data-reveal].visible{opacity:1;transform:none}
+    [data-reveal="left"]{transform:translateX(-36px)}[data-reveal="left"].visible{transform:none}
+    [data-reveal="right"]{transform:translateX(36px)}[data-reveal="right"].visible{transform:none}
+    [data-reveal="scale"]{transform:scale(.92)}[data-reveal="scale"].visible{transform:none}
+    .d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}.d5{transition-delay:.5s!important}
+    .page-hero{min-height:72vh;position:relative;display:flex;align-items:center;overflow:hidden}
+    .page-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .page-hero-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,31,53,.9) 0%,rgba(13,31,53,.5) 100%)}
+    .page-hero-content{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:140px 24px 80px;width:100%}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.55);margin-bottom:20px}
+    .breadcrumb a{color:#2dd4bf}
+    .pg-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.3);color:#2dd4bf;font-size:13px;font-weight:600;padding:6px 16px;border-radius:50px;margin-bottom:20px}
+    .page-hero h1{font-family:'Outfit',sans-serif;font-size:clamp(36px,6vw,70px);font-weight:900;color:#fff;line-height:1.08;letter-spacing:-2px;margin-bottom:20px;max-width:680px}
+    .page-hero h1 em{color:#2dd4bf;font-style:normal}
+    .hero-sub{font-size:17px;color:rgba(255,255,255,.72);line-height:1.8;max-width:540px}
+    .slbl{display:inline-flex;align-items:center;gap:8px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);color:#0f9484;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:50px;margin-bottom:16px}
+    .stitle{font-family:'Outfit',sans-serif;font-size:clamp(26px,3.8vw,46px);font-weight:800;color:#0d1f35;letter-spacing:-1px;line-height:1.15;margin-bottom:14px}
+    .stitle em{color:#0f9484;font-style:normal}
+    .ssub{font-size:16px;color:#6b7280;line-height:1.75;max-width:560px}
+
+    /* 2. Story */
+    .story-sec{padding:100px 0;background:#f8fffe}
+    .story-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+    .story-img{border-radius:16px;overflow:hidden;position:relative}
+    .story-img img{width:100%;height:500px;object-fit:cover;display:block}
+    .story-pill{position:absolute;bottom:22px;right:22px;background:#1a2e44;border:1px solid rgba(45,212,191,.3);border-radius:12px;padding:14px 20px;color:#fff;text-align:center}
+    .story-pill strong{font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:#2dd4bf;display:block}
+    .story-pill span{font-size:12px;color:rgba(255,255,255,.6)}
+    .story-text p{font-size:15px;color:#374151;line-height:1.8;margin-bottom:16px}
+    .story-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+    .story-tag{padding:8px 16px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);border-radius:50px;font-size:13px;font-weight:600;color:#0f9484}
+
+    /* 3. Mission Vision */
+    .mv-sec{padding:100px 0;background:#1a2e44}
+    .mv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+    .mv-card{padding:36px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);transition:background .3s,border-color .3s}
+    .mv-card:hover{background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.3)}
+    .mv-ico{font-size:36px;margin-bottom:16px}
+    .mv-card h3{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:12px}
+    .mv-card p{font-size:14px;color:rgba(255,255,255,.62);line-height:1.75}
+
+    /* 4. Stats */
+    .about-stats{padding:80px 0;background:linear-gradient(135deg,#0d1f35,#1a3a5c)}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+    .stat-it{text-align:center}
+    .stat-n{font-family:'Outfit',sans-serif;font-size:clamp(38px,4.5vw,60px);font-weight:900;color:#2dd4bf;line-height:1;margin-bottom:8px}
+    .stat-l{font-size:14px;color:rgba(255,255,255,.62);font-weight:500}
+
+    /* 5. Team */
+    .team-sec{padding:100px 0;background:#fff}
+    .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:56px}
+    .team-card{text-align:center;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb;background:#f8fffe;transition:transform .3s,box-shadow .3s}
+    .team-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(13,31,53,.12)}
+    .team-img{width:100%;height:240px;object-fit:cover;object-position:top;display:block}
+    .team-body{padding:20px}
+    .team-name{font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0d1f35;margin-bottom:4px}
+    .team-role{font-size:13px;color:#6b7280;margin-bottom:12px}
+    .team-soc{display:flex;justify-content:center;gap:8px}
+    .team-soc a{width:30px;height:30px;border-radius:7px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);display:flex;align-items:center;justify-content:center;font-size:12px;color:#0f9484;transition:all .2s}
+    .team-soc a:hover{background:#0f9484;color:#fff}
+
+    /* 6. Timeline */
+    .timeline-sec{padding:100px 0;background:#f8fffe}
+    .timeline{position:relative;max-width:780px;margin:60px auto 0;padding-left:40px}
+    .timeline::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#2dd4bf,rgba(45,212,191,.1))}
+    .tl-item{position:relative;margin-bottom:44px}
+    .tl-dot{position:absolute;left:-31px;top:4px;width:14px;height:14px;background:#2dd4bf;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 3px rgba(45,212,191,.3)}
+    .tl-year{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:#0f9484;margin-bottom:6px;letter-spacing:.5px}
+    .tl-item h4{font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;color:#0d1f35;margin-bottom:6px}
+    .tl-item p{font-size:14px;color:#6b7280;line-height:1.7}
+
+    /* 7. Partners */
+    .partners-sec{padding:80px 0;background:#0d1f35}
+    .partners-sec h2{font-family:'Outfit',sans-serif;font-size:clamp(22px,3vw,36px);font-weight:800;color:#fff;text-align:center;margin-bottom:12px}
+    .partners-sub{text-align:center;font-size:15px;color:rgba(255,255,255,.55);margin-bottom:48px}
+    .partners-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+    .partner-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:22px 16px;text-align:center;transition:background .3s,border-color .3s}
+    .partner-card:hover{background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.3)}
+    .partner-card .p-ico{font-size:28px;margin-bottom:8px}
+    .partner-card span{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+
+    /* 8. CTA */
+    .cta-sec{padding:96px 0;background:linear-gradient(135deg,#0f9484,#0a7060);text-align:center}
+    .cta-sec h2{font-family:'Outfit',sans-serif;font-size:clamp(28px,4.5vw,52px);font-weight:900;color:#fff;letter-spacing:-1.5px;margin-bottom:14px}
+    .cta-sec p{font-size:16px;color:rgba(255,255,255,.8);margin-bottom:36px;line-height:1.7}
+    .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .btn-wh{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0f9484;font-weight:700;font-size:15px;padding:14px 30px;border-radius:50px;transition:all .3s}
+    .btn-wh:hover{background:#0d1f35;color:#fff;transform:translateY(-2px)}
+    .btn-owh{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;font-weight:600;font-size:15px;padding:14px 30px;border-radius:50px;border:2px solid rgba(255,255,255,.5);transition:all .3s}
+    .btn-owh:hover{background:rgba(255,255,255,.15);border-color:#fff}
+
+    /* Footer */
+    .footer{background:#0a1929;padding:76px 0 0;color:rgba(255,255,255,.7)}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .footer-brand p{font-size:14px;line-height:1.8;margin:14px 0 22px}
+    .footer-logo-row{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+    .fcol h5{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:18px}
+    .fcol ul{display:flex;flex-direction:column;gap:9px}
+    .fcol ul li a{font-size:13px;color:rgba(255,255,255,.58);transition:color .2s}
+    .fcol ul li a:hover{color:#2dd4bf}
+    .fcol ul li{font-size:13px}
+    .soc-links{display:flex;gap:8px}
+    .soc-btn{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.7);transition:all .2s}
+    .soc-btn:hover{background:#2dd4bf;color:#0d1f35;border-color:#2dd4bf}
+    .footer-bot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:22px 0;font-size:13px}
+    .f-legal{display:flex;gap:18px}
+    .f-legal a{color:rgba(255,255,255,.45);transition:color .2s}
+    .f-legal a:hover{color:#2dd4bf}
+
+    @media(max-width:1024px){.story-inner{grid-template-columns:1fr;gap:44px}.story-img img{height:340px}.mv-grid{grid-template-columns:repeat(2,1fr)}.team-grid{grid-template-columns:repeat(2,1fr)}.partners-grid{grid-template-columns:repeat(3,1fr)}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}}
+    @media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr)}.mv-grid{grid-template-columns:1fr}.team-grid{grid-template-columns:repeat(2,1fr)}.partners-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:1fr}.footer-bot{flex-direction:column;text-align:center}}
+    @media(max-width:480px){.stats-grid{grid-template-columns:1fr}.team-grid{grid-template-columns:1fr}.partners-grid{grid-template-columns:repeat(2,1fr)}.cta-btns{flex-direction:column;align-items:center}}
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" id="logo-link"><img src="images/Logo.webp" alt="Stackly Logistics" class="logo-img" /></a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="about.html" class="nav-link active">About Us</a></li>
+        <li><a href="blog.html" class="nav-link">Blog</a></li>
+        <li><a href="contact.html" class="nav-link">Contact Us</a></li>
+      </ul>
+      <a href="login.html" class="btn-cta nav-cta" id="nav-cta-btn">Login <span class="btn-icon">&#8599;</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- 1. HERO -->
+  <section class="page-hero" id="about-hero">
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=85&auto=format&fit=crop" alt="Stackly Logistics team office" class="page-hero-img" loading="eager" />
+    <div class="page-hero-ov"></div>
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span style="color:rgba(255,255,255,.9)">About Us</span></div>
+      <div class="pg-tag"><i class="fa-solid fa-earth-americas"></i> Our Story</div>
+      <h1>15 Years of Moving the <em>World Forward</em></h1>
+      <p class="hero-sub">From a small Salem freight office to a global logistics network spanning 120+ countries — Stackly's journey is built on trust, innovation, and an unrelenting commitment to delivery excellence.</p>
+    </div>
+  </section>
+
+  <!-- 2. STORY -->
+  <section class="story-sec" id="our-story">
+    <div class="container">
+      <div class="story-inner">
+        <div class="story-img" data-reveal="left">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=85&auto=format&fit=crop" alt="Stackly team at work" loading="lazy" />
+          <div class="story-pill"><strong>2009</strong><span>Founded in Salem</span></div>
+        </div>
+        <div data-reveal="right">
+          <div class="slbl"><i class="fa-solid fa-book-open"></i> Our Story</div>
+          <h2 class="stitle">Built from a Single <em>Shipping Desk</em></h2>
+          <p class="story-text">
+            <p style="font-size:15px;color:#374151;line-height:1.8;margin-bottom:14px">Stackly Logistics was founded in 2009 by a team of freight professionals who believed that logistics could be smarter, more transparent, and genuinely client-focused. Starting with a single trucking route between Salem and Chennai, we grew organically by putting customers first — always.</p>
+            <p style="font-size:15px;color:#374151;line-height:1.8;margin-bottom:14px">Today, we operate a fully integrated multimodal logistics network with dedicated air freight desks, ocean cargo partnerships with 40+ shipping lines, and bonded warehouse facilities across 12 Indian cities.</p>
+            <p style="font-size:15px;color:#374151;line-height:1.8">Our technology-first culture means clients get real-time visibility, predictive analytics, and exception management — not just a shipment tracking number.</p>
+          </p>
+          <div class="story-tags">
+            <span class="story-tag"><i class="fa-solid fa-certificate"></i> ISO 9001 Certified</span>
+            <span class="story-tag"><i class="fa-solid fa-plane"></i> IATA Accredited</span>
+            <span class="story-tag"><i class="fa-solid fa-ship"></i> FIATA Member</span>
+            <span class="story-tag"><i class="fa-solid fa-warehouse"></i> 12 Warehouses</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. MISSION / VISION / VALUES -->
+  <section class="mv-sec" id="mission">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="slbl" style="background:rgba(45,212,191,.2)" data-reveal><i class="fa-solid fa-bullseye"></i> Our Purpose</div>
+        <h2 class="stitle" style="color:#fff" data-reveal>Mission, <span style="color:#2dd4bf">Vision &amp; Values</span></h2>
+        <p class="ssub" style="color:rgba(255,255,255,.6);margin:0 auto" data-reveal>The principles that guide every shipment, every decision, every day.</p>
+      </div>
+      <div class="mv-grid">
+        <div class="mv-card d1" data-reveal="scale"><div class="mv-ico"><i class="fa-solid fa-bullseye"></i></div><h3>Our Mission</h3><p>To deliver world-class logistics solutions that empower businesses to reach global markets with confidence, speed, and cost efficiency — from the first mile to the last.</p></div>
+        <div class="mv-card d2" data-reveal="scale"><div class="mv-ico"><i class="fa-solid fa-eye"></i></div><h3>Our Vision</h3><p>To become South Asia's most trusted and technology-forward logistics partner, known for on-time delivery, supply chain resilience, and exceptional client service.</p></div>
+        <div class="mv-card d3" data-reveal="scale"><div class="mv-ico"><i class="fa-solid fa-gem"></i></div><h3>Our Values</h3><p>Integrity in every commitment. Innovation in every process. Accountability for every shipment. We hold ourselves to the same standards we set for the supply chains we manage.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. STATS -->
+  <section class="about-stats" id="about-numbers">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-it d1" data-reveal><div class="stat-n">15+</div><div class="stat-l">Years in Logistics</div></div>
+        <div class="stat-it d2" data-reveal><div class="stat-n">200+</div><div class="stat-l">Team Members</div></div>
+        <div class="stat-it d3" data-reveal><div class="stat-n">12</div><div class="stat-l">Warehouse Facilities</div></div>
+        <div class="stat-it d4" data-reveal><div class="stat-n">4,500+</div><div class="stat-l">Happy Clients</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TEAM -->
+  <section class="team-sec" id="our-team">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="slbl" data-reveal><i class="fa-solid fa-users"></i> Leadership Team</div>
+        <h2 class="stitle" data-reveal>Meet the <em>People Behind</em> Stackly</h2>
+        <p class="ssub" style="margin:0 auto" data-reveal>Experienced logistics leaders driving innovation and excellence across our global operations.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-card d1" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80&auto=format&fit=crop" alt="CEO" class="team-img" loading="lazy" />
+          <div class="team-body"><div class="team-name">Suresh Krishnamurthy</div><div class="team-role">CEO &amp; Co-Founder</div><div class="team-soc"><a href="404.html" aria-label="LinkedIn">in</a><a href="404.html" aria-label="X">X</a></div></div>
+        </div>
+        <div class="team-card d2" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80&auto=format&fit=crop" alt="COO" class="team-img" loading="lazy" />
+          <div class="team-body"><div class="team-name">Anitha Rajan</div><div class="team-role">COO &amp; Co-Founder</div><div class="team-soc"><a href="404.html" aria-label="LinkedIn">in</a><a href="404.html" aria-label="X">X</a></div></div>
+        </div>
+        <div class="team-card d3" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80&auto=format&fit=crop" alt="CTO" class="team-img" loading="lazy" />
+          <div class="team-body"><div class="team-name">Vikram Sundaram</div><div class="team-role">Chief Technology Officer</div><div class="team-soc"><a href="404.html" aria-label="LinkedIn">in</a><a href="404.html" aria-label="X">X</a></div></div>
+        </div>
+        <div class="team-card d4" data-reveal="scale">
+          <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=400&q=80&auto=format&fit=crop" alt="VP Ops" class="team-img" loading="lazy" />
+          <div class="team-body"><div class="team-name">Meenakshi Iyer</div><div class="team-role">VP – Global Operations</div><div class="team-soc"><a href="404.html" aria-label="LinkedIn">in</a><a href="404.html" aria-label="X">X</a></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TIMELINE -->
+  <section class="timeline-sec" id="milestones">
+    <div class="container">
+      <div style="text-align:center">
+        <div class="slbl" data-reveal><i class="fa-solid fa-timeline"></i> Our Journey</div>
+        <h2 class="stitle" data-reveal>Key <em>Milestones</em></h2>
+        <p class="ssub" style="margin:0 auto" data-reveal>15 years of growth, innovation, and expanding our global footprint.</p>
+      </div>
+      <div class="timeline" data-reveal>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2009</div><h4>Founded in Salem</h4><p>Stackly Logistics launched with 5 employees and one trucking contract between Salem and Chennai, Tamil Nadu.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2012</div><h4>First Ocean Freight Desk</h4><p>Expanded into sea freight with FCL services from Chennai and Tuticorin ports, covering 15 international routes.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2015</div><h4>IATA Accreditation &amp; Air Cargo Launch</h4><p>Received IATA accreditation and launched our air cargo division with partnerships with 6 major airlines.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2018</div><h4>TMS &amp; WMS Platform Launch</h4><p>Released our proprietary Transport Management System and Warehouse Management System, enabling real-time client tracking.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2021</div><h4>120+ Countries Network</h4><p>Established agent partnerships in 120+ countries, enabling door-to-door freight globally from India.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2024</div><h4>AI-Powered Logistics Intelligence</h4><p>Integrated AI-driven route optimization and predictive analytics, reducing average freight cost for clients by 18%.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. PARTNERS & CERTS -->
+  <section class="partners-sec" id="certifications">
+    <div class="container">
+      <h2 data-reveal>Certifications &amp; Global Partners</h2>
+      <p class="partners-sub" data-reveal>Recognized by leading international bodies and trusted by global logistics alliances.</p>
+      <div class="partners-grid">
+        <div class="partner-card" data-reveal><div class="p-ico"><i class="fa-solid fa-certificate"></i></div><span>ISO 9001:2015</span></div>
+        <div class="partner-card d1" data-reveal><div class="p-ico"><i class="fa-solid fa-plane"></i></div><span>IATA Accredited</span></div>
+        <div class="partner-card d2" data-reveal><div class="p-ico"><i class="fa-solid fa-ship"></i></div><span>FIATA Member</span></div>
+        <div class="partner-card d3" data-reveal><div class="p-ico"><i class="fa-solid fa-globe"></i></div><span>WCA Network</span></div>
+        <div class="partner-card d4" data-reveal><div class="p-ico"><i class="fa-solid fa-file-shield"></i></div><span>AEO Certified</span></div>
+        <div class="partner-card d5" data-reveal><div class="p-ico"><i class="fa-solid fa-award"></i></div><span>Top Exporter Award</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CTA -->
+  <section class="cta-sec" id="about-cta">
+    <div class="container">
+      <div data-reveal>
+        <h2>Let's Build Your Supply Chain Together</h2>
+        <p>Partner with a team that treats your cargo like their own. Get started with a free logistics consultation today.</p>
+        <div class="cta-btns">
+          <a href="contact.html" class="btn-wh" id="about-cta-btn">Start a Conversation &#8599;</a>
+          <a href="services.html" class="btn-owh" id="about-srv-btn">Explore Services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo-row"><img src="images/Logo.webp" alt="Stackly Logistics" class="logo-img" /></div>
+          <p>Trusted global logistics and freight solutions based in Salem, Tamil Nadu, India.</p>
+          <div class="soc-links"><a href="404.html" class="soc-btn" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a><a href="404.html" class="soc-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a><a href="404.html" class="soc-btn" aria-label="Website"><i class="fa-solid fa-globe"></i></a><a href="404.html" class="soc-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a></div>
+        </div>
+        <div class="fcol"><h5>Quick Links</h5><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+        <div class="fcol"><h5>Freight Modes</h5><ul><li><a href="services.html">Ocean Freight</a></li><li><a href="services.html">Air Cargo</a></li><li><a href="services.html">Road Transport</a></li><li><a href="services.html">Cold Chain</a></li><li><a href="services.html">Warehousing</a></li></ul></div>
+        <div class="fcol"><h5>Logistics Hub</h5><ul><li>Salem, Tamil Nadu, India</li><li><a href="tel:9876543210"><i class="fa-solid fa-phone"></i> 9876543210</a></li><li><a href="mailto:contact@stackly.com"><i class="fa-solid fa-envelope"></i> contact@stackly.com</a></li><li>ISO 9001 &amp; IATA Accredited</li></ul></div>
+      </div>
+      <div class="footer-bot"><p>&copy; 2026 Stackly Logistics. All rights reserved.</p><div class="f-legal"><a href="404.html">Privacy Policy</a><a href="404.html">Terms &amp; Conditions</a></div></div>
+    </div>
+  </footer>
+
+  <script>
+    const nb=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>nb.classList.toggle('scrolled',scrollY>60));
+    const hb=document.getElementById('hamburger'),nl=document.getElementById('nav-links');
+    hb.addEventListener('click',()=>{nl.classList.toggle('open');hb.classList.toggle('active');const s=hb.querySelectorAll('span');if(hb.classList.contains('active')){s[0].style.transform='rotate(45deg) translate(5px,5px)';s[1].style.opacity='0';s[2].style.transform='rotate(-45deg) translate(5px,-5px)'}else{s[0].style.transform=s[2].style.transform='';s[1].style.opacity=''}});
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}}),{threshold:.14});
+    document.querySelectorAll('[data-reveal]').forEach(el=>obs.observe(el));
+  </script>
+
+  <!-- Smart Nav: swap Login→Dashboard when logged in -->
+  <script>
+    (function(){
+      var user = sessionStorage.getItem('sl_user');
+      var cta = document.getElementById('nav-cta-btn');
+      if(user && cta){
+        cta.href = 'signout.html';
+        cta.innerHTML = '<i class="fa-solid fa-gauge"></i> Dashboard<span class="btn-icon">&#8599;</span>';
+      }
+    })();
+  </script>
+</body>
+</html>

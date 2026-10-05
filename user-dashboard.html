@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Dashboard | Stackly Logistics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --primary:#0d1f35;--accent:#2dd4bf;--accent-dark:#0f9484;
+      --accent-light:rgba(45,212,191,.12);--white:#fff;--off:#f0fdf9;
+      --text:#0d1f35;--muted:#6b7280;--border:#e5e7eb;
+      --red:#ef4444;--orange:#f97316;--blue:#3b82f6;--green:#10b981;
+      --sidebar-w:240px;
+    }
+    body{font-family:'Inter',sans-serif;background:var(--off);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+
+    /* ── SIDEBAR ── */
+    .sidebar{
+      width:var(--sidebar-w);flex-shrink:0;
+      background:linear-gradient(180deg,#0d1f35 0%,#1a3a5c 100%);
+      display:flex;flex-direction:column;
+      position:fixed;top:0;left:0;bottom:0;z-index:200;
+      transition:transform .3s;
+    }
+    .sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.07)}
+    .sidebar-logo img{height:36px;filter:brightness(0) invert(1)}
+    .sidebar-role-badge{
+      display:inline-flex;align-items:center;gap:6px;
+      margin-top:10px;
+      background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.3);
+      color:#2dd4bf;font-size:11px;font-weight:700;
+      letter-spacing:1px;text-transform:uppercase;
+      padding:4px 12px;border-radius:50px;
+    }
+    .sidebar-nav{flex:1;overflow-y:auto;padding:14px 10px}
+    .nav-section-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;padding:14px 8px 6px}
+    .nav-item{
+      display:flex;align-items:center;gap:12px;
+      padding:10px 12px;border-radius:10px;
+      font-size:13px;font-weight:500;color:rgba(255,255,255,.65);
+      cursor:pointer;transition:all .2s;margin-bottom:2px;
+      border:none;background:none;width:100%;text-align:left;
+    }
+    .nav-item i{width:18px;font-size:14px;text-align:center;flex-shrink:0}
+    .nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+    .nav-item.active{background:rgba(45,212,191,.15);color:#2dd4bf;font-weight:700}
+    .sidebar-bottom{padding:14px 10px;border-top:1px solid rgba(255,255,255,.07)}
+    .sidebar-user{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:background .2s}
+    .sidebar-user:hover{background:rgba(255,255,255,.07)}
+    .sb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2dd4bf,#0f9484);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#0d1f35;flex-shrink:0}
+    .sb-name{font-size:13px;font-weight:700;color:#fff}
+    .sb-role{font-size:11px;color:rgba(255,255,255,.4)}
+    .sb-signout{margin-left:auto;color:rgba(255,255,255,.3);font-size:14px;cursor:pointer;transition:color .2s}
+    .sb-signout:hover{color:var(--red)}
+
+    /* ── MAIN ── */
+    .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+
+    /* ── TOP BAR ── */
+    .topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .page-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--text)}
+    .page-sub{font-size:11px;color:var(--muted);margin-top:1px}
+    .topbar-right{display:flex;align-items:center;gap:12px}
+    .tb-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--border);background:#fff;color:var(--muted);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative}
+    .tb-btn:hover{border-color:var(--accent);color:var(--accent-dark)}
+    .tb-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red);border:2px solid #fff}
+    .hamburger-btn{display:none;background:none;border:none;cursor:pointer;font-size:18px;color:var(--text);margin-right:8px}
+
+    /* ── CONTENT ── */
+    .content{padding:24px;flex:1}
+
+    /* ── WELCOME BANNER ── */
+    .welcome-banner{
+      background:linear-gradient(135deg,#0d1f35,#1a3a5c);
+      border-radius:18px;padding:28px 32px;
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:24px;position:relative;overflow:hidden;
+    }
+    .welcome-banner::before{content:'';position:absolute;right:-50px;top:-50px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.15) 0%,transparent 70%)}
+    .wb-left{position:relative;z-index:2}
+    .wb-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(45,212,191,.15);border:1px solid rgba(45,212,191,.3);color:#2dd4bf;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:50px;margin-bottom:10px}
+    .wb-title{font-family:'Outfit',sans-serif;font-size:clamp(18px,2.5vw,26px);font-weight:900;color:#fff;margin-bottom:4px}
+    .wb-title span{color:#2dd4bf}
+    .wb-sub{font-size:13px;color:rgba(255,255,255,.6)}
+    .wb-right{position:relative;z-index:2;display:flex;gap:10px;flex-shrink:0}
+    .wb-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 18px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif}
+    .wb-btn.primary{background:linear-gradient(135deg,#2dd4bf,#0f9484);color:#fff}
+    .wb-btn.primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 18px rgba(45,212,191,.4)}
+    .wb-btn.ghost{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.15)}
+    .wb-btn.ghost:hover{background:rgba(255,255,255,.18)}
+
+    /* ── STAT CARDS ── */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .stat-card{background:#fff;border-radius:14px;padding:20px;border:1px solid var(--border);transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden}
+    .stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
+    .stat-card.teal::after{background:linear-gradient(90deg,#2dd4bf,#0f9484)}
+    .stat-card.blue::after{background:linear-gradient(90deg,#3b82f6,#1d4ed8)}
+    .stat-card.green::after{background:linear-gradient(90deg,#10b981,#059669)}
+    .stat-card.orange::after{background:linear-gradient(90deg,#f97316,#ea580c)}
+    .stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(13,31,53,.1)}
+    .sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .sc-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+    .sc-ico.teal{background:rgba(45,212,191,.12);color:#0f9484}
+    .sc-ico.blue{background:rgba(59,130,246,.12);color:#3b82f6}
+    .sc-ico.green{background:rgba(16,185,129,.12);color:#10b981}
+    .sc-ico.orange{background:rgba(249,115,22,.12);color:#f97316}
+    .sc-n{font-family:'Outfit',sans-serif;font-size:26px;font-weight:900;color:var(--text);line-height:1}
+    .sc-l{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+    .sc-change{font-size:10px;font-weight:700;margin-top:6px;display:flex;align-items:center;gap:3px}
+    .sc-change.up{color:#10b981}
+    .sc-change.warn{color:var(--orange)}
+
+    /* ── CARD ── */
+    .card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px}
+    .card-hdr{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .card-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
+    .card-title i{font-size:13px;color:var(--accent-dark)}
+    .card-pad{padding:18px 20px}
+
+    /* ── TABLE ── */
+    .tbl-wrap{overflow-x:auto}
+    table.usr-tbl{width:100%;border-collapse:collapse}
+    .usr-tbl th{padding:11px 14px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;text-align:left;background:#f8fffe;border-bottom:1px solid var(--border)}
+    .usr-tbl td{padding:12px 14px;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6}
+    .usr-tbl tr:last-child td{border-bottom:none}
+    .usr-tbl tbody tr:hover td{background:#f8fffe}
+    .tid{font-weight:700;color:var(--text);font-family:'Outfit',sans-serif}
+    .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700}
+    .badge.transit{background:rgba(59,130,246,.1);color:#3b82f6}
+    .badge.delivered{background:rgba(16,185,129,.1);color:#10b981}
+    .badge.customs{background:rgba(249,115,22,.1);color:#f97316}
+    .badge.pending{background:rgba(107,114,128,.1);color:var(--muted)}
+
+    /* ── TRACK BOX ── */
+    .track-box{display:flex;gap:10px;margin-bottom:20px}
+    .track-input{
+      flex:1;padding:12px 16px 12px 44px;border:1.5px solid var(--border);
+      border-radius:50px;font-size:13px;font-family:'Inter',sans-serif;
+      color:var(--text);outline:none;transition:border-color .3s,box-shadow .3s;
+      background:#fff;position:relative;
+    }
+    .track-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,191,.12)}
+    .track-wrap{flex:1;position:relative}
+    .track-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none}
+    .track-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:50px;background:linear-gradient(135deg,#2dd4bf,#0f9484);color:#fff;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:all .2s}
+    .track-btn:hover{opacity:.9;box-shadow:0 6px 18px rgba(45,212,191,.4)}
+    .track-result{background:var(--off);border:1px solid rgba(45,212,191,.3);border-radius:14px;padding:20px;display:none}
+    .track-result.show{display:block}
+    .tr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .tr-steps{display:flex;align-items:center;gap:0;margin-top:8px}
+    .tr-step{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+    .tr-step::before{content:'';position:absolute;top:12px;left:-50%;width:100%;height:2px;background:var(--border);z-index:0}
+    .tr-step:first-child::before{display:none}
+    .tr-step-dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;z-index:1;transition:all .3s}
+    .tr-step.done .tr-step-dot{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}
+    .tr-step.active .tr-step-dot{background:var(--accent);border-color:var(--accent);color:#0d1f35;box-shadow:0 0 0 4px rgba(45,212,191,.2)}
+    .tr-step::before{background:var(--border)}
+    .tr-step.done::before{background:var(--accent-dark)}
+    .tr-label{font-size:10px;font-weight:600;color:var(--muted);margin-top:6px;text-align:center}
+    .tr-step.done .tr-label,.tr-step.active .tr-label{color:var(--accent-dark)}
+
+    /* ── QUOTE FORM ── */
+    .qf-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .qf-group{display:flex;flex-direction:column;gap:5px}
+    .qf-group.full{grid-column:1/-1}
+    .qf-label{font-size:12px;font-weight:600;color:#374151;display:flex;align-items:center;gap:5px}
+    .qf-label i{font-size:11px;color:var(--accent-dark)}
+    .qf-input{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .3s,box-shadow .3s;background:#fff;width:100%}
+    .qf-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,212,191,.1)}
+    .qf-submit{width:100%;padding:13px;border-radius:50px;border:none;background:linear-gradient(135deg,#2dd4bf,#0f9484);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:6px;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .qf-submit:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 8px 24px rgba(45,212,191,.35)}
+    .qf-success{display:none;padding:14px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:10px;color:#059669;font-weight:600;font-size:13px;text-align:center;margin-top:10px}
+    .qf-success.show{display:block}
+
+    /* ── DOCS LIST ── */
+    .doc-list{display:flex;flex-direction:column;gap:10px}
+    .doc-item{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--border);border-radius:12px;background:#fff;transition:all .2s;cursor:pointer}
+    .doc-item:hover{border-color:var(--accent);background:var(--accent-light)}
+    .doc-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .doc-name{font-size:13px;font-weight:700;color:var(--text)}
+    .doc-meta{font-size:11px;color:var(--muted);margin-top:2px}
+    .doc-dl{margin-left:auto;color:var(--muted);font-size:14px;transition:color .2s}
+    .doc-item:hover .doc-dl{color:var(--accent-dark)}
+
+    /* ── TWO COL ── */
+    .two-col{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+
+    /* ── SIGN OUT MODAL ── */
+    .so-overlay{display:none;position:fixed;inset:0;background:rgba(13,31,53,.65);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center}
+    .so-overlay.open{display:flex}
+    .so-modal{background:#fff;border-radius:22px;padding:36px;max-width:380px;width:90%;text-align:center;animation:mIn .3s ease}
+    @keyframes mIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+    .so-ico{width:68px;height:68px;border-radius:50%;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--red);margin:0 auto 16px}
+    .so-modal h2{font-family:'Outfit',sans-serif;font-size:19px;font-weight:800;color:var(--text);margin-bottom:6px}
+    .so-modal p{font-size:13px;color:var(--muted);margin-bottom:22px}
+    .so-btns{display:flex;gap:10px}
+    .so-cancel{flex:1;padding:12px;border-radius:50px;border:2px solid var(--border);background:#fff;color:#374151;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+    .so-cancel:hover{border-color:var(--text)}
+    .so-confirm{flex:1;padding:12px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--red),#dc2626);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+    .so-confirm:hover{opacity:.9}
+
+    /* ── MOBILE SIDEBAR CLOSE & OVERLAY ── */
+    .sidebar-close-btn{
+      display:none;width:34px;height:34px;border-radius:10px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+      color:#fff;font-size:16px;cursor:pointer;
+      align-items:center;justify-content:center;
+      transition:all .2s;flex-shrink:0;
+    }
+    .sidebar-close-btn:hover{background:rgba(239,68,68,.25);color:#fca5a5;border-color:rgba(239,68,68,.4)}
+    .sidebar-overlay{
+      display:none;position:fixed;inset:0;background:rgba(13,31,53,.6);
+      backdrop-filter:blur(4px);z-index:190;opacity:0;transition:opacity .3s ease;
+    }
+    .sidebar-overlay.open{display:block;opacity:1}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){.two-col{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%);box-shadow:0 0 50px rgba(0,0,0,0.5)}
+      .sidebar.open{transform:translateX(0)}
+      .sidebar-close-btn{display:inline-flex}
+      .main{margin-left:0}
+      .hamburger-btn{display:flex}
+      .content{padding:14px}
+      .topbar{padding:0 14px}
+      .qf-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:500px){.stats-grid{grid-template-columns:1fr}.wb-right{flex-direction:column}}
+  </style>
+</head>
+<body>
+
+<!-- SIGN OUT MODAL -->
+<div class="so-overlay" id="so-overlay">
+  <div class="so-modal">
+    <div class="so-ico"><i class="fa-solid fa-right-from-bracket"></i></div>
+    <h2>Sign Out?</h2>
+    <p>You'll be logged out of your Stackly account.</p>
+    <div class="so-btns">
+      <button class="so-cancel" onclick="document.getElementById('so-overlay').classList.remove('open')">Cancel</button>
+      <button class="so-confirm" id="so-confirm-btn" onclick="doSignOut()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <img src="images/Logo.webp" alt="Stackly Logistics"/>
+      <button class="sidebar-close-btn" id="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="sidebar-role-badge"><i class="fa-solid fa-user"></i> Client Portal</div>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" id="btn-u-overview" onclick="showSection('overview')"><i class="fa-solid fa-gauge"></i> Overview</button>
+    <button class="nav-item" id="btn-u-shipments" onclick="showSection('shipments')"><i class="fa-solid fa-ship"></i> My Shipments</button>
+    <button class="nav-item" id="btn-u-track" onclick="showSection('track')"><i class="fa-solid fa-location-dot"></i> Track Shipment</button>
+    <button class="nav-item" id="btn-u-quote" onclick="showSection('quote')"><i class="fa-solid fa-file-invoice"></i> Request a Quote</button>
+    <button class="nav-item" id="btn-u-docs" onclick="showSection('docs')"><i class="fa-solid fa-folder-open"></i> My Documents</button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="sidebar-user">
+      <div class="sb-avatar" id="sb-avatar">U</div>
+      <div>
+        <div class="sb-name" id="sb-name">User</div>
+        <div class="sb-role">Client Account</div>
+      </div>
+      <i class="fa-solid fa-right-from-bracket sb-signout" onclick="document.getElementById('so-overlay').classList.add('open')" title="Sign Out"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
+      <div>
+        <div class="page-title" id="page-title">My Dashboard</div>
+        <div class="page-sub" id="page-sub">Your shipment & logistics overview</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="tb-btn"><i class="fa-solid fa-bell"></i><span class="tb-dot"></span></button>
+      <button class="tb-btn" onclick="document.getElementById('so-overlay').classList.add('open')" style="border-color:rgba(239,68,68,.25);color:var(--red)"><i class="fa-solid fa-right-from-bracket"></i></button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ══ OVERVIEW ══ -->
+    <div id="section-overview">
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <div class="wb-left">
+          <div class="wb-tag"><i class="fa-solid fa-circle" style="font-size:6px"></i> Live Portal</div>
+          <div class="wb-title">Hello, <span id="welcome-name">User</span>!</div>
+          <div class="wb-sub">You have <strong style="color:#2dd4bf">3 active shipments</strong> and 1 customs alert.</div>
+        </div>
+        <div class="wb-right">
+          <button class="wb-btn primary" onclick="showSection('quote')"><i class="fa-solid fa-plus"></i> New Quote</button>
+          <button class="wb-btn ghost" onclick="showSection('track')"><i class="fa-solid fa-location-dot"></i> Track</button>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card teal">
+          <div class="sc-top"><div class="sc-ico teal"><i class="fa-solid fa-boxes-stacked"></i></div></div>
+          <div class="sc-n">3</div>
+          <div class="sc-l">Active Shipments</div>
+          <div class="sc-change up"><i class="fa-solid fa-circle" style="font-size:7px"></i> All on schedule</div>
+        </div>
+        <div class="stat-card green">
+          <div class="sc-top"><div class="sc-ico green"><i class="fa-solid fa-circle-check"></i></div></div>
+          <div class="sc-n">19</div>
+          <div class="sc-l">Delivered (YTD)</div>
+          <div class="sc-change up"><i class="fa-solid fa-arrow-up"></i> 98.4% on-time</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="sc-top"><div class="sc-ico orange"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
+          <div class="sc-n">1</div>
+          <div class="sc-l">Customs Alert</div>
+          <div class="sc-change warn"><i class="fa-solid fa-exclamation"></i> Action needed</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="sc-top"><div class="sc-ico blue"><i class="fa-solid fa-file-invoice-dollar"></i></div></div>
+          <div class="sc-n">₹3.5L</div>
+          <div class="sc-l">Freight Cost (Oct)</div>
+          <div class="sc-change up"><i class="fa-solid fa-arrow-down"></i> −6% vs Sep</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- Recent Shipments -->
+        <div class="card">
+          <div class="card-hdr">
+            <div class="card-title"><i class="fa-solid fa-ship"></i> Recent Shipments</div>
+            <span style="font-size:12px;font-weight:700;color:var(--accent-dark);cursor:pointer" onclick="showSection('shipments')"><i class="fa-solid fa-arrow-right"></i> View All</span>
+          </div>
+          <div class="tbl-wrap">
+            <table class="usr-tbl">
+              <thead><tr><th>Tracking ID</th><th>Destination</th><th>Status</th><th>ETA</th></tr></thead>
+              <tbody>
+                <tr><td><span class="tid">SL-2026-0841</span></td><td>Dubai, UAE</td><td><span class="badge transit"><i class="fa-solid fa-circle" style="font-size:7px"></i> In Transit</span></td><td>Oct 12</td></tr>
+                <tr><td><span class="tid">SL-2026-0836</span></td><td>Rotterdam, NL</td><td><span class="badge customs"><i class="fa-solid fa-file-contract" style="font-size:8px"></i> Customs Hold</span></td><td>Oct 18</td></tr>
+                <tr><td><span class="tid">SL-2026-0830</span></td><td>New York, US</td><td><span class="badge delivered"><i class="fa-solid fa-check"></i> Delivered</span></td><td>Oct 01</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+          <div class="card-hdr"><div class="card-title"><i class="fa-solid fa-bolt"></i> Quick Actions</div></div>
+          <div class="card-pad" style="display:flex;flex-direction:column;gap:10px">
+            <button onclick="showSection('quote')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer;transition:all .2s;width:100%;font-family:'Inter',sans-serif;text-align:left" onmouseover="this.style.borderColor='#2dd4bf'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(45,212,191,.12);color:#0f9484;display:flex;align-items:center;justify-content:center;font-size:15px"><i class="fa-solid fa-file-invoice"></i></div>
+              <div><div style="font-size:13px;font-weight:700;color:var(--text)">Request Quote</div><div style="font-size:11px;color:var(--muted)">Get a freight estimate</div></div>
+            </button>
+            <button onclick="showSection('track')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer;transition:all .2s;width:100%;font-family:'Inter',sans-serif;text-align:left" onmouseover="this.style.borderColor='#2dd4bf'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(59,130,246,.12);color:#3b82f6;display:flex;align-items:center;justify-content:center;font-size:15px"><i class="fa-solid fa-location-dot"></i></div>
+              <div><div style="font-size:13px;font-weight:700;color:var(--text)">Track Shipment</div><div style="font-size:11px;color:var(--muted)">Live GPS tracking</div></div>
+            </button>
+            <button onclick="showSection('docs')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer;transition:all .2s;width:100%;font-family:'Inter',sans-serif;text-align:left" onmouseover="this.style.borderColor='#2dd4bf'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(249,115,22,.12);color:#f97316;display:flex;align-items:center;justify-content:center;font-size:15px"><i class="fa-solid fa-folder-open"></i></div>
+              <div><div style="font-size:13px;font-weight:700;color:var(--text)">View Documents</div><div style="font-size:11px;color:var(--muted)">BOL, AWB, Customs</div></div>
+            </button>
+            <button onclick="window.location.href='contact.html'" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer;transition:all .2s;width:100%;font-family:'Inter',sans-serif;text-align:left" onmouseover="this.style.borderColor='#2dd4bf'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,.12);color:#10b981;display:flex;align-items:center;justify-content:center;font-size:15px"><i class="fa-solid fa-headset"></i></div>
+              <div><div style="font-size:13px;font-weight:700;color:var(--text)">Contact Support</div><div style="font-size:11px;color:var(--muted)">24/7 logistics team</div></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MY SHIPMENTS ══ -->
+    <div id="section-shipments" style="display:none">
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-title"><i class="fa-solid fa-ship"></i> My Shipments</div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="usr-tbl">
+            <thead><tr><th>Tracking ID</th><th>Origin</th><th>Destination</th><th>Mode</th><th>Weight</th><th>Status</th><th>ETA</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tid">SL-2026-0841</span></td><td>Salem, IN</td><td>Dubai, UAE</td><td><i class="fa-solid fa-ship" style="color:#0f9484"></i> Ocean FCL</td><td>4,200 kg</td><td><span class="badge transit"><i class="fa-solid fa-circle" style="font-size:7px"></i> In Transit</span></td><td>Oct 12, 2026</td></tr>
+              <tr><td><span class="tid">SL-2026-0836</span></td><td>Salem, IN</td><td>Rotterdam, NL</td><td><i class="fa-solid fa-ship" style="color:#0f9484"></i> Ocean LCL</td><td>1,750 kg</td><td><span class="badge customs"><i class="fa-solid fa-file-contract" style="font-size:8px"></i> Customs Hold</span></td><td>Oct 18, 2026</td></tr>
+              <tr><td><span class="tid">SL-2026-0834</span></td><td>Salem, IN</td><td>Frankfurt, DE</td><td><i class="fa-solid fa-truck-fast" style="color:#f97316"></i> Road+Air</td><td>820 kg</td><td><span class="badge pending"><i class="fa-solid fa-clock" style="font-size:8px"></i> Pending</span></td><td>Oct 20, 2026</td></tr>
+              <tr><td><span class="tid">SL-2026-0830</span></td><td>Salem, IN</td><td>New York, US</td><td><i class="fa-solid fa-plane" style="color:#3b82f6"></i> Air Express</td><td>150 kg</td><td><span class="badge delivered"><i class="fa-solid fa-check"></i> Delivered</span></td><td>Oct 01, 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TRACK SHIPMENT ══ -->
+    <div id="section-track" style="display:none">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title"><i class="fa-solid fa-location-dot"></i> Track Your Shipment</div></div>
+        <div class="card-pad">
+          <div class="track-box">
+            <div class="track-wrap">
+              <i class="fa-solid fa-magnifying-glass track-ico"></i>
+              <input class="track-input" id="track-input" placeholder="Enter Tracking ID (e.g. SL-2026-0841)" />
+            </div>
+            <button class="track-btn" onclick="doTrack()"><i class="fa-solid fa-satellite-dish"></i> Track Now</button>
+          </div>
+          <div class="track-result" id="track-result">
+            <div class="tr-row">
+              <div>
+                <div style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--text)" id="tr-id">SL-2026-0841</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:2px">Salem, IN → Dubai, UAE &nbsp;|&nbsp; Ocean FCL</div>
+              </div>
+              <span class="badge transit"><i class="fa-solid fa-circle" style="font-size:7px"></i> In Transit</span>
+            </div>
+            <div class="tr-steps">
+              <div class="tr-step done"><div class="tr-step-dot"><i class="fa-solid fa-check"></i></div><div class="tr-label">Picked Up</div></div>
+              <div class="tr-step done"><div class="tr-step-dot"><i class="fa-solid fa-check"></i></div><div class="tr-label">At Port</div></div>
+              <div class="tr-step active"><div class="tr-step-dot"><i class="fa-solid fa-ship"></i></div><div class="tr-label">In Transit</div></div>
+              <div class="tr-step"><div class="tr-step-dot"><i class="fa-solid fa-anchor"></i></div><div class="tr-label">Destination Port</div></div>
+              <div class="tr-step"><div class="tr-step-dot"><i class="fa-solid fa-circle-check"></i></div><div class="tr-label">Delivered</div></div>
+            </div>
+            <div style="margin-top:18px;background:#fff;border-radius:12px;padding:16px;border:1px solid var(--border)">
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+                <div><div style="font-size:11px;color:var(--muted);font-weight:600">VESSEL</div><div style="font-size:13px;font-weight:700;margin-top:2px">MSC Gülsün</div></div>
+                <div><div style="font-size:11px;color:var(--muted);font-weight:600">CURRENT LOCATION</div><div style="font-size:13px;font-weight:700;margin-top:2px">Arabian Sea</div></div>
+                <div><div style="font-size:11px;color:var(--muted);font-weight:600">ETA</div><div style="font-size:13px;font-weight:700;color:#0f9484;margin-top:2px">Oct 12, 2026</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ QUOTE FORM ══ -->
+    <div id="section-quote" style="display:none">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title"><i class="fa-solid fa-file-invoice"></i> Request a Freight Quote</div></div>
+        <div class="card-pad">
+          <form onsubmit="submitQuote(event)">
+            <div class="qf-grid">
+              <div class="qf-group"><label class="qf-label"><i class="fa-solid fa-location-dot"></i> Origin</label><input class="qf-input" placeholder="e.g. Salem, Tamil Nadu" required/></div>
+              <div class="qf-group"><label class="qf-label"><i class="fa-solid fa-flag-checkered"></i> Destination</label><input class="qf-input" placeholder="e.g. Dubai, UAE" required/></div>
+              <div class="qf-group"><label class="qf-label"><i class="fa-solid fa-boxes-stacked"></i> Freight Mode</label>
+                <select class="qf-input"><option>Ocean Freight (FCL)</option><option>Ocean Freight (LCL)</option><option>Air Cargo</option><option>Air Express</option><option>Road Transport (FTL)</option><option>Road + Air (Multi-modal)</option></select>
+              </div>
+              <div class="qf-group"><label class="qf-label"><i class="fa-solid fa-weight-hanging"></i> Cargo Weight (kg)</label><input class="qf-input" type="number" placeholder="e.g. 500" required/></div>
+              <div class="qf-group"><label class="qf-label"><i class="fa-solid fa-ruler-combined"></i> Dimensions (cm)</label><input class="qf-input" placeholder="L × W × H e.g. 120×80×90"/></div>
+              <div class="qf-group"><label class="qf-label"><i class="fa-solid fa-calendar"></i> Ready Date</label><input class="qf-input" type="date" required/></div>
+              <div class="qf-group full"><label class="qf-label"><i class="fa-solid fa-tag"></i> Cargo Description</label><textarea class="qf-input" rows="3" placeholder="Briefly describe your cargo (type, packaging, special handling needs…)" style="resize:vertical"></textarea></div>
+            </div>
+            <button type="submit" class="qf-submit"><i class="fa-solid fa-paper-plane"></i> Submit Quote Request</button>
+          </form>
+          <div class="qf-success" id="qf-success"><i class="fa-solid fa-circle-check"></i> Quote request submitted! Our team will respond within 2 business hours.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ DOCUMENTS ══ -->
+    <div id="section-docs" style="display:none">
+      <div class="card">
+        <div class="card-hdr"><div class="card-title"><i class="fa-solid fa-folder-open"></i> My Documents</div></div>
+        <div class="card-pad">
+          <div class="doc-list">
+            <div class="doc-item" onclick="alert('Downloading…')"><div class="doc-ico" style="background:rgba(59,130,246,.12);color:#3b82f6"><i class="fa-solid fa-file-pdf"></i></div><div><div class="doc-name">Bill of Lading – SL-2026-0841</div><div class="doc-meta">Ocean FCL · Salem → Dubai · Oct 2026</div></div><i class="fa-solid fa-download doc-dl"></i></div>
+            <div class="doc-item" onclick="alert('Downloading…')"><div class="doc-ico" style="background:rgba(16,185,129,.12);color:#10b981"><i class="fa-solid fa-file-contract"></i></div><div><div class="doc-name">Customs Declaration – SL-2026-0836</div><div class="doc-meta">Ocean LCL · Salem → Rotterdam · Oct 2026</div></div><i class="fa-solid fa-download doc-dl"></i></div>
+            <div class="doc-item" onclick="alert('Downloading…')"><div class="doc-ico" style="background:rgba(249,115,22,.12);color:#f97316"><i class="fa-solid fa-file-invoice-dollar"></i></div><div><div class="doc-name">Invoice #INV-4811 – QuickCart Commerce</div><div class="doc-meta">₹1,24,500 · Paid · Sep 2026</div></div><i class="fa-solid fa-download doc-dl"></i></div>
+            <div class="doc-item" onclick="alert('Downloading…')"><div class="doc-ico" style="background:rgba(139,92,246,.12);color:#8b5cf6"><i class="fa-solid fa-plane"></i></div><div><div class="doc-name">Air Waybill – SL-2026-0830</div><div class="doc-meta">Air Express · Salem → New York · Oct 2026</div></div><i class="fa-solid fa-download doc-dl"></i></div>
+            <div class="doc-item" onclick="alert('Downloading…')"><div class="doc-ico" style="background:rgba(45,212,191,.12);color:#0f9484"><i class="fa-solid fa-file-shield"></i></div><div><div class="doc-name">Cargo Insurance Certificate – Oct 2026</div><div class="doc-meta">All-risk policy · 3 active shipments</div></div><i class="fa-solid fa-download doc-dl"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  // ── Load user session ──────────────────────────
+  (function(){
+    let raw = sessionStorage.getItem('sl_user');
+    if(!raw){
+      // Default to demo user session if accessed directly
+      const demo = { id: 'Alex Morgan', role: 'user' };
+      sessionStorage.setItem('sl_user', JSON.stringify(demo));
+      raw = JSON.stringify(demo);
+    }
+    const u = JSON.parse(raw);
+    let name = u.name;
+    if(!name){
+      if(u.id && u.id.includes('@')){
+        let part = u.id.split('@')[0].replace(/[0-9._-]+/g, ' ').trim();
+        name = part ? part.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ') : u.id.split('@')[0];
+      } else if(u.id){
+        name = u.id.charAt(0).toUpperCase() + u.id.slice(1);
+      } else {
+        name = 'Alex Morgan';
+      }
+    }
+    const init = name.charAt(0).toUpperCase() || 'U';
+    const av = document.getElementById('sb-avatar');
+    const nm = document.getElementById('sb-name');
+    const wn = document.getElementById('welcome-name');
+    if (av) av.textContent = init;
+    if (nm) nm.textContent = name;
+    if (wn) wn.textContent = name;
+  })();
+
+  // ── Section switching ──────────────────────────
+  const sections = ['overview','shipments','track','quote','docs'];
+  const titles = {
+    overview:  ['My Dashboard','Your shipment & logistics overview'],
+    shipments: ['My Shipments','All your freight bookings and status'],
+    track:     ['Track Shipment','Real-time GPS & vessel tracking'],
+    quote:     ['Request a Quote','Get a competitive freight estimate'],
+    docs:      ['My Documents','Download BOLs, AWBs, invoices & customs forms']
+  };
+  function showSection(name){
+    sections.forEach(s=>{
+      const el=document.getElementById('section-'+s);
+      if(el) el.style.display = s===name ? '' : 'none';
+    });
+    document.getElementById('page-title').textContent = titles[name][0];
+    document.getElementById('page-sub').textContent   = titles[name][1];
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(i=>i.classList.remove('active'));
+    const btn = document.getElementById('btn-u-' + name);
+    if(btn) btn.classList.add('active');
+    closeSidebar();
+  }
+
+  // ── Mobile Sidebar Controls ──────────────────────
+  function toggleSidebar(){
+    const sb = document.getElementById('sidebar');
+    const so = document.getElementById('sidebar-overlay');
+    if(sb) sb.classList.toggle('open');
+    if(so) so.classList.toggle('open');
+  }
+  function closeSidebar(){
+    const sb = document.getElementById('sidebar');
+    const so = document.getElementById('sidebar-overlay');
+    if(sb) sb.classList.remove('open');
+    if(so) so.classList.remove('open');
+  }
+
+  // ── Track ───────────────────────────────────────
+  function doTrack(){
+    const val = document.getElementById('track-input').value.trim();
+    if(!val){ alert('Please enter a tracking ID'); return; }
+    document.getElementById('tr-id').textContent = val;
+    document.getElementById('track-result').classList.add('show');
+  }
+
+  // ── Quote submit ────────────────────────────────
+  function submitQuote(e){
+    e.preventDefault();
+    const s = document.getElementById('qf-success');
+    s.classList.add('show');
+    e.target.style.display='none';
+  }
+
+  // ── Sign out ────────────────────────────────────
+  function doSignOut(){
+    const btn=document.getElementById('so-confirm-btn');
+    btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Signing out…';
+    btn.disabled=true;
+    sessionStorage.removeItem('sl_user');
+    setTimeout(()=>{ window.location.href='login.html'; },900);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Dashboard | Stackly Logistics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --primary:#0d1f35;--primary2:#1a2e44;--accent:#2dd4bf;--accent-dark:#0f9484;
+      --accent-light:rgba(45,212,191,.12);--white:#fff;--off:#f0fdf9;
+      --text:#0d1f35;--muted:#6b7280;--border:#e5e7eb;
+      --red:#ef4444;--orange:#f97316;--blue:#3b82f6;--green:#10b981;--purple:#8b5cf6;
+      --sidebar-w:256px;
+    }
+    body{font-family:'Inter',sans-serif;background:var(--off);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+
+    /* ── SIDEBAR ── */
+    .sidebar{
+      width:var(--sidebar-w);flex-shrink:0;
+      background:var(--primary);
+      display:flex;flex-direction:column;
+      position:fixed;top:0;left:0;bottom:0;
+      z-index:200;
+      transition:transform .3s;
+    }
+    .sidebar-logo{
+      padding:24px 20px 20px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .sidebar-logo img{height:38px;filter:brightness(0) invert(1)}
+    .sidebar-role-badge{
+      display:inline-flex;align-items:center;gap:6px;
+      margin-top:10px;
+      background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);
+      color:#fca5a5;font-size:11px;font-weight:700;
+      letter-spacing:1px;text-transform:uppercase;
+      padding:4px 12px;border-radius:50px;
+    }
+    .sidebar-nav{flex:1;overflow-y:auto;padding:16px 12px}
+    .nav-section-label{
+      font-size:10px;font-weight:700;color:rgba(255,255,255,.3);
+      letter-spacing:1.5px;text-transform:uppercase;
+      padding:16px 8px 8px;
+    }
+    .nav-item{
+      display:flex;align-items:center;gap:12px;
+      padding:11px 12px;border-radius:10px;
+      font-size:13px;font-weight:500;color:rgba(255,255,255,.65);
+      cursor:pointer;transition:all .2s;margin-bottom:2px;
+      border:none;background:none;width:100%;text-align:left;
+    }
+    .nav-item i{width:18px;font-size:15px;text-align:center;flex-shrink:0}
+    .nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+    .nav-item.active{background:rgba(45,212,191,.15);color:#2dd4bf;font-weight:700}
+    .nav-item .nav-badge{
+      margin-left:auto;background:var(--red);color:#fff;
+      font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;
+    }
+    .sidebar-bottom{padding:16px 12px;border-top:1px solid rgba(255,255,255,.07)}
+    .sidebar-user{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 10px;border-radius:10px;
+      cursor:pointer;transition:background .2s;
+    }
+    .sidebar-user:hover{background:rgba(255,255,255,.07)}
+    .sb-avatar{
+      width:36px;height:36px;border-radius:50%;
+      background:linear-gradient(135deg,#2dd4bf,#0f9484);
+      display:flex;align-items:center;justify-content:center;
+      font-size:14px;font-weight:800;color:#0d1f35;flex-shrink:0;
+    }
+    .sb-name{font-size:13px;font-weight:700;color:#fff}
+    .sb-role{font-size:11px;color:rgba(255,255,255,.45)}
+    .sb-signout{margin-left:auto;color:rgba(255,255,255,.35);font-size:14px;cursor:pointer;transition:color .2s}
+    .sb-signout:hover{color:var(--red)}
+
+    /* ── MAIN ── */
+    .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+    /* ── TOP BAR ── */
+    .topbar{
+      background:#fff;border-bottom:1px solid var(--border);
+      padding:0 28px;height:64px;
+      display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:100;
+    }
+    .topbar-left{display:flex;align-items:center;gap:16px}
+    .page-title{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:var(--text)}
+    .page-sub{font-size:12px;color:var(--muted);margin-top:1px}
+    .topbar-right{display:flex;align-items:center;gap:14px}
+    .tb-btn{
+      width:38px;height:38px;border-radius:10px;border:1px solid var(--border);
+      background:#fff;color:var(--muted);font-size:15px;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:all .2s;position:relative;
+    }
+    .tb-btn:hover{border-color:var(--accent);color:var(--accent-dark)}
+    .tb-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:2px solid #fff}
+    .tb-search{
+      display:flex;align-items:center;gap:8px;
+      background:var(--off);border:1px solid var(--border);
+      border-radius:10px;padding:8px 14px;font-size:13px;color:var(--muted);
+    }
+    .tb-search input{border:none;background:none;outline:none;font-size:13px;color:var(--text);width:180px;font-family:'Inter',sans-serif}
+
+    /* ── CONTENT ── */
+    .content{padding:28px;flex:1}
+
+    /* ── STAT CARDS ── */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:28px}
+    .stat-card{
+      background:#fff;border-radius:16px;padding:22px 20px;
+      border:1px solid var(--border);
+      display:flex;flex-direction:column;gap:4px;
+      transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;
+    }
+    .stat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+    .stat-card.teal::after{background:linear-gradient(90deg,#2dd4bf,#0f9484)}
+    .stat-card.blue::after{background:linear-gradient(90deg,#3b82f6,#1d4ed8)}
+    .stat-card.green::after{background:linear-gradient(90deg,#10b981,#059669)}
+    .stat-card.orange::after{background:linear-gradient(90deg,#f97316,#ea580c)}
+    .stat-card.purple::after{background:linear-gradient(90deg,#8b5cf6,#6d28d9)}
+    .stat-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(13,31,53,.1)}
+    .sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+    .sc-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
+    .sc-ico.teal{background:rgba(45,212,191,.12);color:#0f9484}
+    .sc-ico.blue{background:rgba(59,130,246,.12);color:#3b82f6}
+    .sc-ico.green{background:rgba(16,185,129,.12);color:#10b981}
+    .sc-ico.orange{background:rgba(249,115,22,.12);color:#f97316}
+    .sc-ico.purple{background:rgba(139,92,246,.12);color:#8b5cf6}
+    .sc-trend{font-size:11px;font-weight:700;display:flex;align-items:center;gap:4px;padding:4px 8px;border-radius:50px}
+    .sc-trend.up{background:rgba(16,185,129,.1);color:#10b981}
+    .sc-trend.down{background:rgba(239,68,68,.1);color:var(--red)}
+    .sc-n{font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:var(--text);line-height:1}
+    .sc-l{font-size:12px;color:var(--muted);margin-top:4px;font-weight:500}
+
+    /* ── SECTION HEADER ── */
+    .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .sec-title{font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
+    .sec-title i{font-size:14px;color:var(--accent-dark)}
+    .sec-action{font-size:12px;font-weight:700;color:var(--accent-dark);cursor:pointer;display:flex;align-items:center;gap:5px}
+    .sec-action:hover{color:var(--accent)}
+
+    /* ── CARD ── */
+    .card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:24px}
+    .card-pad{padding:22px 24px}
+
+    /* ── TABLE ── */
+    .tbl-wrap{overflow-x:auto}
+    table.adm-tbl{width:100%;border-collapse:collapse}
+    .adm-tbl th{
+      padding:12px 16px;font-size:11px;font-weight:700;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.6px;text-align:left;
+      background:#f8fffe;border-bottom:1px solid var(--border);
+    }
+    .adm-tbl td{padding:13px 16px;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6}
+    .adm-tbl tr:last-child td{border-bottom:none}
+    .adm-tbl tbody tr{transition:background .15s;cursor:pointer}
+    .adm-tbl tbody tr:hover td{background:#f8fffe}
+    .tid{font-weight:700;color:var(--text);font-family:'Outfit',sans-serif;font-size:13px}
+    .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700}
+    .badge.transit{background:rgba(59,130,246,.1);color:#3b82f6}
+    .badge.delivered{background:rgba(16,185,129,.1);color:#10b981}
+    .badge.customs{background:rgba(249,115,22,.1);color:#f97316}
+    .badge.pending{background:rgba(107,114,128,.1);color:var(--muted)}
+    .badge.alert{background:rgba(239,68,68,.1);color:var(--red)}
+    .badge.admin{background:rgba(139,92,246,.1);color:#8b5cf6}
+    .badge.user{background:rgba(45,212,191,.1);color:#0f9484}
+    .action-btn{
+      width:30px;height:30px;border-radius:8px;border:1px solid var(--border);
+      background:#fff;color:var(--muted);font-size:12px;
+      display:inline-flex;align-items:center;justify-content:center;
+      cursor:pointer;transition:all .2s;margin-right:4px;
+    }
+    .action-btn:hover{border-color:var(--accent);color:var(--accent-dark)}
+
+    /* ── TWO COL ── */
+    .two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+
+    /* ── ACTIVITY FEED ── */
+    .activity-list{display:flex;flex-direction:column}
+    .activity-item{
+      display:flex;align-items:flex-start;gap:12px;
+      padding:14px 0;border-bottom:1px solid #f3f4f6;
+    }
+    .activity-item:last-child{border-bottom:none}
+    .act-ico{
+      width:34px;height:34px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:13px;flex-shrink:0;
+    }
+    .act-ico.green{background:rgba(16,185,129,.12);color:#10b981}
+    .act-ico.blue{background:rgba(59,130,246,.12);color:#3b82f6}
+    .act-ico.orange{background:rgba(249,115,22,.12);color:#f97316}
+    .act-ico.red{background:rgba(239,68,68,.12);color:var(--red)}
+    .act-ico.teal{background:rgba(45,212,191,.12);color:#0f9484}
+    .act-body{flex:1}
+    .act-text{font-size:13px;color:var(--text);line-height:1.5}
+    .act-text strong{font-weight:700}
+    .act-time{font-size:11px;color:var(--muted);margin-top:2px}
+
+    /* ── CLIENTS TABLE ── */
+    .client-row td:first-child{font-weight:700}
+    .perf-bar-wrap{background:#f0f0f0;border-radius:50px;height:6px;width:100px;overflow:hidden;display:inline-block}
+    .perf-bar{height:100%;border-radius:50px;background:linear-gradient(90deg,#2dd4bf,#0f9484)}
+
+    /* ── QUICK ACTIONS ── */
+    .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .qa-btn{
+      display:flex;align-items:center;gap:10px;
+      padding:14px;border-radius:12px;border:1px solid var(--border);
+      background:#fff;cursor:pointer;transition:all .2s;text-align:left;font-family:'Inter',sans-serif;
+    }
+    .qa-btn:hover{border-color:var(--accent);background:var(--accent-light)}
+    .qa-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+    .qa-label{font-size:12px;font-weight:700;color:var(--text)}
+    .qa-sub{font-size:10px;color:var(--muted);margin-top:1px}
+
+    /* ── SIGN OUT MODAL ── */
+    .so-overlay{display:none;position:fixed;inset:0;background:rgba(13,31,53,.65);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center}
+    .so-overlay.open{display:flex}
+    .so-modal{background:#fff;border-radius:24px;padding:40px;max-width:400px;width:90%;text-align:center;animation:modalIn .3s ease}
+    @keyframes modalIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+    .so-ico{width:72px;height:72px;border-radius:50%;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--red);margin:0 auto 18px}
+    .so-modal h2{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px}
+    .so-modal p{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
+    .so-btns{display:flex;gap:10px}
+    .so-cancel{flex:1;padding:12px;border-radius:50px;border:2px solid var(--border);background:#fff;color:#374151;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+    .so-cancel:hover{border-color:var(--text)}
+    .so-confirm{flex:1;padding:12px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--red),#dc2626);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s}
+    .so-confirm:hover{opacity:.9;transform:translateY(-1px)}
+
+    /* ── MOBILE SIDEBAR CLOSE & OVERLAY ── */
+    .sidebar-close-btn{
+      display:none;width:34px;height:34px;border-radius:10px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+      color:#fff;font-size:16px;cursor:pointer;
+      align-items:center;justify-content:center;
+      transition:all .2s;flex-shrink:0;
+    }
+    .sidebar-close-btn:hover{background:rgba(239,68,68,.25);color:#fca5a5;border-color:rgba(239,68,68,.4)}
+    .sidebar-overlay{
+      display:none;position:fixed;inset:0;background:rgba(13,31,53,.6);
+      backdrop-filter:blur(4px);z-index:190;opacity:0;transition:opacity .3s ease;
+    }
+    .sidebar-overlay.open{display:block;opacity:1}
+
+    /* ── SIDEBAR TOGGLE (mobile) ── */
+    .hamburger-btn{display:none;background:none;border:none;cursor:pointer;font-size:20px;color:var(--text)}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%);box-shadow:0 0 50px rgba(0,0,0,0.5)}
+      .sidebar.open{transform:translateX(0)}
+      .sidebar-close-btn{display:inline-flex}
+      .main{margin-left:0}
+      .hamburger-btn{display:flex}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .content{padding:16px}
+      .topbar{padding:0 16px}
+    }
+    @media(max-width:500px){.stats-grid{grid-template-columns:1fr}.qa-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<!-- SIGN OUT MODAL -->
+<div class="so-overlay" id="so-overlay">
+  <div class="so-modal">
+    <div class="so-ico"><i class="fa-solid fa-right-from-bracket"></i></div>
+    <h2>Sign Out?</h2>
+    <p>You'll be returned to the login screen. All unsaved changes will be lost.</p>
+    <div class="so-btns">
+      <button class="so-cancel" onclick="document.getElementById('so-overlay').classList.remove('open')">Cancel</button>
+      <button class="so-confirm" id="so-confirm-btn" onclick="doSignOut()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <img src="images/Logo.webp" alt="Stackly Logistics"/>
+      <button class="sidebar-close-btn" id="sidebar-close-btn" onclick="closeSidebar()" aria-label="Close sidebar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="sidebar-role-badge"><i class="fa-solid fa-user-shield"></i> Admin Panel</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" id="btn-adm-overview" onclick="showSection('overview')"><i class="fa-solid fa-gauge"></i> Dashboard</button>
+    <button class="nav-item" id="btn-adm-shipments" onclick="showSection('shipments')"><i class="fa-solid fa-ship"></i> Shipments <span class="nav-badge">24</span></button>
+    <button class="nav-item" id="btn-adm-clients" onclick="showSection('clients')"><i class="fa-solid fa-users"></i> Clients <span class="nav-badge" style="background:#3b82f6">3</span></button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-user">
+      <div class="sb-avatar" id="sb-avatar">A</div>
+      <div>
+        <div class="sb-name" id="sb-name">Admin</div>
+        <div class="sb-role">Administrator</div>
+      </div>
+      <i class="fa-solid fa-right-from-bracket sb-signout" onclick="document.getElementById('so-overlay').classList.add('open')" title="Sign Out"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div>
+        <div class="page-title" id="page-title">Admin Dashboard</div>
+        <div class="page-sub" id="page-sub">Welcome back — here's today's operations overview</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="tb-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search shipments, clients…"/>
+      </div>
+      <button class="tb-btn"><i class="fa-solid fa-bell"></i><span class="tb-dot"></span></button>
+      <button class="tb-btn"><i class="fa-solid fa-envelope"></i></button>
+      <button class="tb-btn" onclick="document.getElementById('so-overlay').classList.add('open')" title="Sign Out" style="border-color:rgba(239,68,68,.3);color:var(--red)">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ══ OVERVIEW SECTION ══ -->
+    <div id="section-overview">
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card teal">
+          <div class="sc-top">
+            <div class="sc-ico teal"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> 12%</div>
+          </div>
+          <div class="sc-n">247</div>
+          <div class="sc-l">Total Active Shipments</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="sc-top">
+            <div class="sc-ico blue"><i class="fa-solid fa-users"></i></div>
+            <div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> 8%</div>
+          </div>
+          <div class="sc-n">5,128</div>
+          <div class="sc-l">Registered Clients</div>
+        </div>
+        <div class="stat-card green">
+          <div class="sc-top">
+            <div class="sc-ico green"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+            <div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> 23%</div>
+          </div>
+          <div class="sc-n">₹48.6L</div>
+          <div class="sc-l">Monthly Revenue</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="sc-top">
+            <div class="sc-ico orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="sc-trend down"><i class="fa-solid fa-arrow-up"></i> +3</div>
+          </div>
+          <div class="sc-n">7</div>
+          <div class="sc-l">Pending Actions</div>
+        </div>
+      </div>
+
+      <div class="stats-grid" style="margin-bottom:28px">
+        <div class="stat-card purple">
+          <div class="sc-top">
+            <div class="sc-ico purple"><i class="fa-solid fa-truck-fast"></i></div>
+            <div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> 5%</div>
+          </div>
+          <div class="sc-n">84</div>
+          <div class="sc-l">Fleet Vehicles Active</div>
+        </div>
+        <div class="stat-card teal">
+          <div class="sc-top">
+            <div class="sc-ico teal"><i class="fa-solid fa-warehouse"></i></div>
+            <div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> 91%</div>
+          </div>
+          <div class="sc-n">12</div>
+          <div class="sc-l">Warehouse Locations</div>
+        </div>
+        <div class="stat-card green">
+          <div class="sc-top">
+            <div class="sc-ico green"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> 99.4%</div>
+          </div>
+          <div class="sc-n">1,847</div>
+          <div class="sc-l">Delivered (YTD)</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="sc-top">
+            <div class="sc-ico blue"><i class="fa-solid fa-user-tie"></i></div>
+            <div class="sc-trend up"><i class="fa-solid fa-arrow-up"></i> 2 new</div>
+          </div>
+          <div class="sc-n">218</div>
+          <div class="sc-l">Staff Members</div>
+        </div>
+      </div>
+
+      <!-- Two-column: Shipments + Activity -->
+      <div class="two-col">
+        <!-- Recent Shipments -->
+        <div class="card">
+          <div class="card-pad" style="border-bottom:1px solid var(--border)">
+            <div class="sec-hdr" style="margin-bottom:0">
+              <div class="sec-title"><i class="fa-solid fa-ship"></i> Recent Shipments</div>
+              <div class="sec-action" onclick="showSection('shipments')"><i class="fa-solid fa-arrow-right"></i> View All</div>
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table class="adm-tbl">
+              <thead><tr><th>Tracking ID</th><th>Route</th><th>Mode</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td><span class="tid">SL-2026-0841</span></td><td>Salem → Dubai</td><td><i class="fa-solid fa-ship" style="color:#0f9484"></i> FCL</td><td><span class="badge transit"><i class="fa-solid fa-circle" style="font-size:7px"></i> In Transit</span></td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+                <tr><td><span class="tid">SL-2026-0839</span></td><td>Chennai → Singapore</td><td><i class="fa-solid fa-plane" style="color:#3b82f6"></i> Air</td><td><span class="badge delivered"><i class="fa-solid fa-check"></i> Delivered</span></td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+                <tr><td><span class="tid">SL-2026-0836</span></td><td>Mumbai → Rotterdam</td><td><i class="fa-solid fa-ship" style="color:#0f9484"></i> LCL</td><td><span class="badge customs"><i class="fa-solid fa-file-contract" style="font-size:8px"></i> Customs Hold</span></td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+                <tr><td><span class="tid">SL-2026-0834</span></td><td>Bengaluru → Frankfurt</td><td><i class="fa-solid fa-truck-fast" style="color:#f97316"></i> Road+Air</td><td><span class="badge pending"><i class="fa-solid fa-clock" style="font-size:8px"></i> Pending</span></td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+                <tr><td><span class="tid">SL-2026-0830</span></td><td>Coimbatore → New York</td><td><i class="fa-solid fa-plane" style="color:#3b82f6"></i> Express</td><td><span class="badge delivered"><i class="fa-solid fa-check"></i> Delivered</span></td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="card">
+          <div class="card-pad" style="border-bottom:1px solid var(--border)">
+            <div class="sec-title"><i class="fa-solid fa-clock-rotate-left"></i> Recent Activity</div>
+          </div>
+          <div class="card-pad">
+            <div class="activity-list">
+              <div class="activity-item"><div class="act-ico green"><i class="fa-solid fa-check"></i></div><div class="act-body"><div class="act-text"><strong>SL-2026-0839</strong> delivered to Singapore</div><div class="act-time">2 mins ago · Air Cargo</div></div></div>
+              <div class="activity-item"><div class="act-ico orange"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="act-body"><div class="act-text"><strong>SL-2026-0836</strong> held at Rotterdam customs</div><div class="act-time">18 mins ago · Action needed</div></div></div>
+              <div class="activity-item"><div class="act-ico blue"><i class="fa-solid fa-user-plus"></i></div><div class="act-body"><div class="act-text">New client <strong>MediCare Pharma</strong> registered</div><div class="act-time">1 hour ago</div></div></div>
+              <div class="activity-item"><div class="act-ico teal"><i class="fa-solid fa-file-invoice"></i></div><div class="act-body"><div class="act-text">Invoice <strong>#INV-4821</strong> paid by QuickCart</div><div class="act-time">3 hours ago · ₹1,24,500</div></div></div>
+              <div class="activity-item"><div class="act-ico red"><i class="fa-solid fa-bell"></i></div><div class="act-body"><div class="act-text">Fleet vehicle <strong>TN-38-AX-4820</strong> maintenance due</div><div class="act-time">5 hours ago</div></div></div>
+              <div class="activity-item"><div class="act-ico green"><i class="fa-solid fa-ship"></i></div><div class="act-body"><div class="act-text">New FCL booking <strong>SL-2026-0842</strong> confirmed</div><div class="act-time">Today, 09:15 AM</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions + Top Clients -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-pad" style="border-bottom:1px solid var(--border)">
+            <div class="sec-title"><i class="fa-solid fa-bolt"></i> Quick Actions</div>
+          </div>
+          <div class="card-pad">
+            <div class="qa-grid">
+              <button class="qa-btn" onclick="alert('Create shipment — coming soon!')"><div class="qa-ico" style="background:rgba(45,212,191,.12);color:#0f9484"><i class="fa-solid fa-plus"></i></div><div><div class="qa-label">New Shipment</div><div class="qa-sub">Create booking</div></div></button>
+              <button class="qa-btn" onclick="alert('Invoice generator — coming soon!')"><div class="qa-ico" style="background:rgba(59,130,246,.12);color:#3b82f6"><i class="fa-solid fa-file-invoice"></i></div><div><div class="qa-label">Generate Invoice</div><div class="qa-sub">Billing module</div></div></button>
+              <button class="qa-btn" onclick="showSection('clients')"><div class="qa-ico" style="background:rgba(139,92,246,.12);color:#8b5cf6"><i class="fa-solid fa-user-plus"></i></div><div><div class="qa-label">Add Client</div><div class="qa-sub">Register account</div></div></button>
+              <button class="qa-btn" onclick="alert('Fleet dispatch — coming soon!')"><div class="qa-ico" style="background:rgba(249,115,22,.12);color:#f97316"><i class="fa-solid fa-truck-fast"></i></div><div><div class="qa-label">Dispatch Vehicle</div><div class="qa-sub">Fleet module</div></div></button>
+              <button class="qa-btn" onclick="alert('Report generator — coming soon!')"><div class="qa-ico" style="background:rgba(16,185,129,.12);color:#10b981"><i class="fa-solid fa-chart-bar"></i></div><div><div class="qa-label">Export Report</div><div class="qa-sub">PDF / Excel</div></div></button>
+              <button class="qa-btn" onclick="alert('Customs filing — coming soon!')"><div class="qa-ico" style="background:rgba(239,68,68,.12);color:var(--red)"><i class="fa-solid fa-file-shield"></i></div><div><div class="qa-label">Customs Filing</div><div class="qa-sub">Import/Export</div></div></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-pad" style="border-bottom:1px solid var(--border)">
+            <div class="sec-title"><i class="fa-solid fa-star"></i> Top Clients (Oct)</div>
+          </div>
+          <div class="card-pad" style="padding:0">
+            <table class="adm-tbl">
+              <thead><tr><th>Client</th><th>Shipments</th><th>On-Time</th></tr></thead>
+              <tbody>
+                <tr class="client-row"><td>TechParts India</td><td>42</td><td><div class="perf-bar-wrap"><div class="perf-bar" style="width:98%"></div></div> 98%</td></tr>
+                <tr class="client-row"><td>MedCore Labs</td><td>31</td><td><div class="perf-bar-wrap"><div class="perf-bar" style="width:100%"></div></div> 100%</td></tr>
+                <tr class="client-row"><td>QuickCart Commerce</td><td>28</td><td><div class="perf-bar-wrap"><div class="perf-bar" style="width:95%"></div></div> 95%</td></tr>
+                <tr class="client-row"><td>Agri Exports Ltd</td><td>19</td><td><div class="perf-bar-wrap"><div class="perf-bar" style="width:89%"></div></div> 89%</td></tr>
+                <tr class="client-row"><td>AutoZone Components</td><td>15</td><td><div class="perf-bar-wrap"><div class="perf-bar" style="width:93%"></div></div> 93%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SHIPMENTS SECTION ══ -->
+    <div id="section-shipments" style="display:none">
+      <div class="card">
+        <div class="card-pad" style="border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div class="sec-title"><i class="fa-solid fa-ship"></i> All Shipments</div>
+          <button style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:50px;background:linear-gradient(135deg,#2dd4bf,#0f9484);color:#fff;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:'Inter',sans-serif" onclick="alert('New shipment form — coming soon!')">
+            <i class="fa-solid fa-plus"></i> New Shipment
+          </button>
+        </div>
+        <div class="card-pad" style="border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap">
+          <button class="badge transit" style="cursor:pointer;padding:7px 14px">All (247)</button>
+          <button class="badge transit" style="cursor:pointer;padding:7px 14px"><i class="fa-solid fa-circle" style="font-size:7px"></i> In Transit (98)</button>
+          <button class="badge delivered" style="cursor:pointer;padding:7px 14px"><i class="fa-solid fa-check"></i> Delivered (132)</button>
+          <button class="badge customs" style="cursor:pointer;padding:7px 14px"><i class="fa-solid fa-file-contract" style="font-size:8px"></i> Customs Hold (9)</button>
+          <button class="badge pending" style="cursor:pointer;padding:7px 14px"><i class="fa-solid fa-clock" style="font-size:8px"></i> Pending (8)</button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="adm-tbl">
+            <thead><tr><th>Tracking ID</th><th>Client</th><th>Origin</th><th>Destination</th><th>Mode</th><th>Weight</th><th>Status</th><th>ETA</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tid">SL-2026-0841</span></td><td>TechParts India</td><td>Salem, IN</td><td>Dubai, UAE</td><td><i class="fa-solid fa-ship" style="color:#0f9484"></i> Ocean FCL</td><td>4,200 kg</td><td><span class="badge transit"><i class="fa-solid fa-circle" style="font-size:7px"></i> In Transit</span></td><td>Oct 12</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button><button class="action-btn" title="Delete" style="color:var(--red)"><i class="fa-solid fa-trash"></i></button></td></tr>
+              <tr><td><span class="tid">SL-2026-0839</span></td><td>MedCore Labs</td><td>Chennai, IN</td><td>Singapore</td><td><i class="fa-solid fa-plane" style="color:#3b82f6"></i> Air Cargo</td><td>380 kg</td><td><span class="badge delivered"><i class="fa-solid fa-check"></i> Delivered</span></td><td>Oct 04</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button><button class="action-btn" title="Delete" style="color:var(--red)"><i class="fa-solid fa-trash"></i></button></td></tr>
+              <tr><td><span class="tid">SL-2026-0836</span></td><td>QuickCart Commerce</td><td>Mumbai, IN</td><td>Rotterdam, NL</td><td><i class="fa-solid fa-ship" style="color:#0f9484"></i> Ocean LCL</td><td>1,750 kg</td><td><span class="badge customs"><i class="fa-solid fa-file-contract" style="font-size:8px"></i> Customs Hold</span></td><td>Oct 18</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button><button class="action-btn" title="Delete" style="color:var(--red)"><i class="fa-solid fa-trash"></i></button></td></tr>
+              <tr><td><span class="tid">SL-2026-0834</span></td><td>Agri Exports Ltd</td><td>Bengaluru, IN</td><td>Frankfurt, DE</td><td><i class="fa-solid fa-truck-fast" style="color:#f97316"></i> Road+Air</td><td>820 kg</td><td><span class="badge pending"><i class="fa-solid fa-clock" style="font-size:8px"></i> Pending</span></td><td>Oct 20</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button><button class="action-btn" title="Delete" style="color:var(--red)"><i class="fa-solid fa-trash"></i></button></td></tr>
+              <tr><td><span class="tid">SL-2026-0830</span></td><td>AutoZone Components</td><td>Coimbatore, IN</td><td>New York, US</td><td><i class="fa-solid fa-plane" style="color:#3b82f6"></i> Air Express</td><td>150 kg</td><td><span class="badge delivered"><i class="fa-solid fa-check"></i> Delivered</span></td><td>Oct 01</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button><button class="action-btn" title="Delete" style="color:var(--red)"><i class="fa-solid fa-trash"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CLIENTS SECTION ══ -->
+    <div id="section-clients" style="display:none">
+      <div class="card">
+        <div class="card-pad" style="border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div class="sec-title"><i class="fa-solid fa-users"></i> Client Management</div>
+          <button style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:50px;background:linear-gradient(135deg,#2dd4bf,#0f9484);color:#fff;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:'Inter',sans-serif" onclick="alert('Add client form — coming soon!')">
+            <i class="fa-solid fa-user-plus"></i> Add Client
+          </button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="adm-tbl">
+            <thead><tr><th>Client</th><th>Type</th><th>Shipments</th><th>Revenue</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>TechParts India Pvt Ltd</strong><div style="font-size:11px;color:var(--muted)">rajiv.menon@techparts.in</div></td><td><span class="badge transit">Enterprise</span></td><td>42</td><td>₹8,40,000</td><td><span class="badge delivered">Active</span></td><td>Jan 2022</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+              <tr><td><strong>MedCore Labs</strong><div style="font-size:11px;color:var(--muted)">priya.nair@medcore.com</div></td><td><span class="badge transit">Enterprise</span></td><td>31</td><td>₹6,20,000</td><td><span class="badge delivered">Active</span></td><td>Mar 2021</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+              <tr><td><strong>QuickCart Commerce</strong><div style="font-size:11px;color:var(--muted)">arjun@quickcart.in</div></td><td><span class="badge" style="background:rgba(249,115,22,.1);color:#f97316">Business</span></td><td>28</td><td>₹3,50,000</td><td><span class="badge delivered">Active</span></td><td>Jun 2023</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+              <tr><td><strong>Agri Exports Ltd</strong><div style="font-size:11px;color:var(--muted)">agri@exports.co.in</div></td><td><span class="badge" style="background:rgba(249,115,22,.1);color:#f97316">Business</span></td><td>19</td><td>₹2,10,000</td><td><span class="badge pending">Inactive</span></td><td>Sep 2022</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+              <tr><td><strong>AutoZone Components</strong><div style="font-size:11px;color:var(--muted)">auto@azone.in</div></td><td><span class="badge" style="background:rgba(139,92,246,.1);color:#8b5cf6">Standard</span></td><td>15</td><td>₹1,80,000</td><td><span class="badge delivered">Active</span></td><td>Feb 2024</td><td><button class="action-btn" title="View"><i class="fa-solid fa-eye"></i></button><button class="action-btn" title="Edit"><i class="fa-solid fa-pen"></i></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  // ── Load admin session ─────────────────────────
+  (function(){
+    let raw = sessionStorage.getItem('sl_user');
+    if(!raw){
+      // Default to demo admin session if accessed directly
+      const demo = { id: 'admin', role: 'admin' };
+      sessionStorage.setItem('sl_user', JSON.stringify(demo));
+      raw = JSON.stringify(demo);
+    }
+    const u = JSON.parse(raw);
+    let name = u.name;
+    if(!name){
+      if(u.id && u.id.includes('@')){
+        let part = u.id.split('@')[0].replace(/[0-9._-]+/g, ' ').trim();
+        name = part ? part.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ') : u.id.split('@')[0];
+      } else if(u.id){
+        name = u.id.charAt(0).toUpperCase() + u.id.slice(1);
+      } else {
+        name = 'Admin';
+      }
+    }
+    const init = name.charAt(0).toUpperCase() || 'A';
+    const av = document.getElementById('sb-avatar');
+    const nm = document.getElementById('sb-name');
+    if (av) av.textContent = init;
+    if (nm) nm.textContent = name;
+  })();
+
+  // ── Section switching ──────────────────────────
+  function showSection(name){
+    ['overview','shipments','clients'].forEach(s=>{
+      const el = document.getElementById('section-'+s);
+      if(el) el.style.display = s===name ? '' : 'none';
+    });
+    const titles = {
+      overview:  ['Admin Dashboard','Welcome back — today\'s operations overview'],
+      shipments: ['Shipment Management','View, filter and manage all active shipments'],
+      clients:   ['Client Management','Manage registered clients and accounts']
+    };
+    document.getElementById('page-title').textContent = titles[name][0];
+    document.getElementById('page-sub').textContent   = titles[name][1];
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(i=>i.classList.remove('active'));
+    const btn = document.getElementById('btn-adm-' + name);
+    if(btn) btn.classList.add('active');
+    closeSidebar();
+  }
+
+  // ── Mobile Sidebar Controls ──────────────────────
+  function toggleSidebar(){
+    const sb = document.getElementById('sidebar');
+    const so = document.getElementById('sidebar-overlay');
+    if(sb) sb.classList.toggle('open');
+    if(so) so.classList.toggle('open');
+  }
+  function closeSidebar(){
+    const sb = document.getElementById('sidebar');
+    const so = document.getElementById('sidebar-overlay');
+    if(sb) sb.classList.remove('open');
+    if(so) so.classList.remove('open');
+  }
+
+  // ── Sign out ───────────────────────────────────
+  function doSignOut(){
+    const btn = document.getElementById('so-confirm-btn');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing out…';
+    btn.disabled = true;
+    sessionStorage.removeItem('sl_user');
+    setTimeout(()=>{ window.location.href='login.html'; }, 900);
+  }
+</script>
+</body>
+</html>

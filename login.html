@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Stackly Logistics</title>
+  <meta name="description" content="Log in to your Stackly Logistics account to manage shipments, track freight, and access your logistics dashboard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page Layout ── */
+    .login-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Left Panel ── */
+    .login-panel-left {
+      position: relative;
+      background: linear-gradient(145deg, #0d1f35 0%, #1a3a5c 50%, #0f9484 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 56px;
+      overflow: hidden;
+    }
+    .login-panel-left::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,212,191,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .login-panel-left::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 380px; height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,212,191,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .lp-logo { position: relative; z-index: 2; }
+    .lp-logo img { height: 44px; width: auto; filter: brightness(0) invert(1); }
+    .lp-hero { position: relative; z-index: 2; }
+    .lp-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(45,212,191,0.15);
+      border: 1px solid rgba(45,212,191,0.35);
+      color: #2dd4bf;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 24px;
+    }
+    .lp-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(30px, 3.5vw, 48px);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+    .lp-title em { color: #2dd4bf; font-style: normal; }
+    .lp-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.75;
+      max-width: 380px;
+      margin-bottom: 40px;
+    }
+    .lp-stats {
+      display: flex;
+      gap: 32px;
+    }
+    .lp-stat { }
+    .lp-stat-n {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px; font-weight: 900;
+      color: #2dd4bf; line-height: 1;
+    }
+    .lp-stat-l {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      margin-top: 4px;
+    }
+    .lp-features { position: relative; z-index: 2; }
+    .lp-feat {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .lp-feat:last-child { border-bottom: none; }
+    .lp-feat-ico {
+      width: 40px; height: 40px;
+      background: rgba(45,212,191,0.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: #2dd4bf;
+      flex-shrink: 0;
+    }
+    .lp-feat-text h5 {
+      font-size: 14px; font-weight: 700;
+      color: #fff; margin-bottom: 2px;
+    }
+    .lp-feat-text p { font-size: 12px; color: rgba(255,255,255,0.55); }
+
+    /* ── Right Panel (Form) ── */
+    .login-panel-right {
+      background: #f8fffe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      position: relative;
+    }
+    .login-form-wrap {
+      width: 100%;
+      max-width: 440px;
+    }
+    .lf-header { margin-bottom: 36px; }
+    .lf-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 30px; font-weight: 900;
+      color: #0d1f35;
+      letter-spacing: -1px; margin-bottom: 8px;
+    }
+    .lf-header p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+    .lf-header p a { color: #0f9484; font-weight: 600; }
+
+    /* ── User Type Dropdown (above user ID) ── */
+    .user-type-section {
+      margin-bottom: 24px;
+    }
+    .user-type-label {
+      font-size: 13px; font-weight: 700;
+      color: #374151; margin-bottom: 8px;
+      display: block;
+    }
+    .user-type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .user-type-card {
+      position: relative;
+      cursor: pointer;
+    }
+    .user-type-card input[type="radio"] {
+      position: absolute; opacity: 0; width: 0; height: 0;
+    }
+    .user-type-card label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+    .user-type-card label:hover {
+      border-color: #2dd4bf;
+      background: rgba(45,212,191,0.04);
+    }
+    .user-type-card input:checked + label {
+      border-color: #0f9484;
+      background: rgba(15,148,132,0.07);
+      box-shadow: 0 0 0 4px rgba(45,212,191,0.15);
+    }
+    .ut-ico {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      background: rgba(45,212,191,0.12);
+      color: #0f9484;
+      transition: background 0.25s;
+    }
+    .user-type-card input:checked + label .ut-ico {
+      background: #0f9484;
+      color: #fff;
+    }
+    .ut-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px; font-weight: 800;
+      color: #0d1f35;
+    }
+    .ut-desc { font-size: 11px; color: #9ca3af; line-height: 1.4; }
+    .user-type-card input:checked + label .ut-name { color: #0f9484; }
+    .ut-check {
+      position: absolute; top: 10px; right: 10px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #0f9484;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #fff;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .user-type-card input:checked ~ .ut-check { opacity: 1; }
+
+    /* ── Form Fields ── */
+    .form-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px;
+    }
+    .form-divider span {
+      height: 1px; background: #e5e7eb; flex: 1;
+    }
+    .form-divider p {
+      font-size: 12px; font-weight: 600;
+      color: #9ca3af; white-space: nowrap;
+    }
+    .lf-group {
+      display: flex; flex-direction: column; gap: 6px;
+      margin-bottom: 18px;
+    }
+    .lf-label {
+      font-size: 13px; font-weight: 600;
+      color: #374151;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .lf-label i { font-size: 12px; color: #0f9484; }
+    .lf-input-wrap { position: relative; }
+    .lf-input {
+      width: 100%;
+      padding: 13px 16px 13px 44px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: #0d1f35;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .lf-input:focus {
+      border-color: #2dd4bf;
+      box-shadow: 0 0 0 3px rgba(45,212,191,0.15);
+    }
+    .lf-input-ico {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px; color: #9ca3af;
+      transition: color 0.3s;
+      pointer-events: none;
+    }
+    .lf-input:focus ~ .lf-input-ico { color: #0f9484; }
+    .lf-input-wrap:focus-within .lf-input-ico { color: #0f9484; }
+    .lf-toggle-pw {
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px; color: #9ca3af;
+      cursor: pointer; border: none; background: none;
+      transition: color 0.2s; padding: 0;
+    }
+    .lf-toggle-pw:hover { color: #0f9484; }
+    .lf-input.with-eye { padding-right: 44px; }
+
+    /* ── Options Row ── */
+    .lf-options {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 26px;
+    }
+    .lf-remember {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer;
+    }
+    .lf-remember input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: #0f9484;
+      cursor: pointer;
+    }
+    .lf-remember span { font-size: 13px; color: #374151; font-weight: 500; }
+    .lf-forgot { font-size: 13px; font-weight: 600; color: #0f9484; transition: color 0.2s; }
+    .lf-forgot:hover { color: #2dd4bf; }
+
+    /* ── Submit Button ── */
+    .lf-submit {
+      width: 100%;
+      padding: 15px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #2dd4bf, #0f9484);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+      transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .lf-submit:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(45,212,191,0.4);
+    }
+    .lf-submit:active { transform: translateY(0); }
+
+    /* ── Error State ── */
+    .lf-error {
+      display: none;
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px; color: #dc2626;
+      margin-bottom: 18px;
+      align-items: center; gap: 8px;
+    }
+    .lf-error.show { display: flex; }
+
+    /* ── Footer Note ── */
+    .lf-note {
+      text-align: center;
+      font-size: 12px; color: #9ca3af;
+      line-height: 1.6;
+    }
+    .lf-note a { color: #0f9484; font-weight: 600; }
+
+    /* ── Loading Overlay ── */
+    .lf-loading {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(13,31,53,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      align-items: center; justify-content: center;
+    }
+    .lf-loading.show { display: flex; }
+    .lf-spinner {
+      width: 56px; height: 56px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top-color: #2dd4bf;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .login-page { grid-template-columns: 1fr; }
+      .login-panel-left { display: none; }
+      .login-panel-right { min-height: 100vh; }
+    }
+    @media (max-width: 480px) {
+      .login-panel-right { padding: 36px 20px; }
+      .user-type-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Overlay -->
+  <div class="lf-loading" id="lf-loading">
+    <div class="lf-spinner"></div>
+  </div>
+
+  <main class="login-page" id="login-page">
+
+    <!-- ══ LEFT PANEL ══ -->
+    <div class="login-panel-left">
+      <div class="lp-logo">
+        <img src="images/Logo.webp" alt="Stackly Logistics" />
+      </div>
+
+      <div class="lp-hero">
+        <div class="lp-tag"><i class="fa-solid fa-shield-halved"></i> Secure Portal</div>
+        <h2 class="lp-title">Your Freight<br/>Dashboard <em>Awaits</em></h2>
+        <p class="lp-sub">Access real-time shipment tracking, freight quotes, customs documents, and full supply chain visibility — all in one place.</p>
+        <div class="lp-stats">
+          <div class="lp-stat">
+            <div class="lp-stat-n">120+</div>
+            <div class="lp-stat-l">Countries Covered</div>
+          </div>
+          <div class="lp-stat">
+            <div class="lp-stat-n">5k+</div>
+            <div class="lp-stat-l">Active Clients</div>
+          </div>
+          <div class="lp-stat">
+            <div class="lp-stat-n">99.9%</div>
+            <div class="lp-stat-l">Platform Uptime</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lp-features">
+        <div class="lp-feat">
+          <div class="lp-feat-ico"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="lp-feat-text">
+            <h5>Live Shipment Tracking</h5>
+            <p>GPS-updated freight location every 5 minutes</p>
+          </div>
+        </div>
+        <div class="lp-feat">
+          <div class="lp-feat-ico"><i class="fa-solid fa-file-invoice"></i></div>
+          <div class="lp-feat-text">
+            <h5>Digital Documents</h5>
+            <p>Bills of lading, AWBs, and customs forms online</p>
+          </div>
+        </div>
+        <div class="lp-feat">
+          <div class="lp-feat-ico"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="lp-feat-text">
+            <h5>Analytics Dashboard</h5>
+            <p>Cost trends, delivery rates, and route insights</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RIGHT PANEL (FORM) ══ -->
+    <div class="login-panel-right">
+      <div class="login-form-wrap">
+
+        <div class="lf-header">
+          <h1>Welcome Back</h1>
+          <p>Sign in to your Stackly account. Need help? <a href="contact.html">Contact Support</a></p>
+        </div>
+
+        <!-- Quick Demo Credentials Box -->
+        <div style="background:rgba(45,212,191,0.08);border:1px dashed rgba(15,148,132,0.35);border-radius:12px;padding:12px 14px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#0f9484;display:flex;align-items:center;gap:6px;">
+              <i class="fa-solid fa-bolt"></i> Quick Demo Access
+            </div>
+            <div style="font-size:11px;color:#6b7280;margin-top:2px;">
+              User: <strong style="color:#0d1f35">user</strong>/<strong style="color:#0d1f35">user123</strong> &bull; Admin: <strong style="color:#0d1f35">admin</strong>/<strong style="color:#0d1f35">admin123</strong>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button type="button" onclick="fillDemo('user')" style="background:#0f9484;color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+              <i class="fa-solid fa-user"></i> Demo User
+            </button>
+            <button type="button" onclick="fillDemo('admin')" style="background:#0d1f35;color:#2dd4bf;border:none;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+              <i class="fa-solid fa-shield-halved"></i> Demo Admin
+            </button>
+          </div>
+        </div>
+
+        <!-- Error message -->
+        <div class="lf-error" id="lf-error">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="lf-error-msg">Invalid credentials. Please try again.</span>
+        </div>
+
+        <form id="login-form" onsubmit="handleLogin(event)" novalidate>
+
+          <!-- ══ STEP 1: USER TYPE DROPDOWN ══ -->
+          <div class="user-type-section">
+            <span class="user-type-label"><i class="fa-solid fa-user-tag" style="color:#0f9484;margin-right:5px;"></i> Select Account Type</span>
+            <div class="user-type-grid">
+
+              <div class="user-type-card">
+                <input type="radio" name="user_type" id="type-user" value="user" checked />
+                <label for="type-user">
+                  <div class="ut-ico"><i class="fa-solid fa-user"></i></div>
+                  <div class="ut-name">User</div>
+                  <div class="ut-desc">Client & shipper accounts</div>
+                </label>
+                <div class="ut-check"><i class="fa-solid fa-check"></i></div>
+              </div>
+
+              <div class="user-type-card">
+                <input type="radio" name="user_type" id="type-admin" value="admin" />
+                <label for="type-admin">
+                  <div class="ut-ico"><i class="fa-solid fa-user-shield"></i></div>
+                  <div class="ut-name">Admin</div>
+                  <div class="ut-desc">Staff & operations team</div>
+                </label>
+                <div class="ut-check"><i class="fa-solid fa-check"></i></div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="form-divider">
+            <span></span><p>Enter your credentials</p><span></span>
+          </div>
+
+          <!-- User ID / Email -->
+          <div class="lf-group">
+            <label class="lf-label" for="lf-userid">
+              <i class="fa-solid fa-id-card"></i> User ID / Email
+            </label>
+            <div class="lf-input-wrap">
+              <input
+                class="lf-input"
+                type="text"
+                id="lf-userid"
+                name="userid"
+                placeholder="Enter your user ID or email"
+                autocomplete="username"
+                required
+              />
+              <i class="fa-solid fa-at lf-input-ico"></i>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="lf-group">
+            <label class="lf-label" for="lf-password">
+              <i class="fa-solid fa-lock"></i> Password
+            </label>
+            <div class="lf-input-wrap">
+              <input
+                class="lf-input with-eye"
+                type="password"
+                id="lf-password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+              <i class="fa-solid fa-key lf-input-ico"></i>
+              <button type="button" class="lf-toggle-pw" id="toggle-pw" aria-label="Show/hide password" onclick="togglePassword()">
+                <i class="fa-solid fa-eye" id="pw-eye-icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember & Forgot -->
+          <div class="lf-options">
+            <label class="lf-remember">
+              <input type="checkbox" id="remember-me" name="remember" />
+              <span>Remember me</span>
+            </label>
+            <a href="404.html" class="lf-forgot">Forgot Password?</a>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="lf-submit" id="lf-submit-btn">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            Sign In to Dashboard
+          </button>
+
+        </form>
+
+        <p class="lf-note">
+          By signing in you agree to our <a href="404.html">Terms of Service</a> and <a href="404.html">Privacy Policy</a>.<br/>
+          &copy; 2026 Stackly Logistics. All rights reserved.
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // ── Toggle password visibility ──────────────────────
+    function togglePassword() {
+      const pw = document.getElementById('lf-password');
+      const icon = document.getElementById('pw-eye-icon');
+      if (pw.type === 'password') {
+        pw.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        pw.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    // ── Handle login form submit ────────────────────────
+    function handleLogin(e) {
+      e.preventDefault();
+      const userid  = document.getElementById('lf-userid').value.trim();
+      const password = document.getElementById('lf-password').value;
+      const userType = document.querySelector('input[name="user_type"]:checked').value;
+      const errorBox = document.getElementById('lf-error');
+      const errorMsg = document.getElementById('lf-error-msg');
+      const loading  = document.getElementById('lf-loading');
+
+      errorBox.classList.remove('show');
+
+      // Basic validation
+      if (!userid) {
+        errorMsg.textContent = 'Please enter your User ID or email.';
+        errorBox.classList.add('show');
+        document.getElementById('lf-userid').focus();
+        return;
+      }
+      if (!password) {
+        errorMsg.textContent = 'Please enter your password.';
+        errorBox.classList.add('show');
+        document.getElementById('lf-password').focus();
+        return;
+      }
+
+      // Show loading
+      loading.classList.add('show');
+
+      // Simulate authentication and redirect
+      setTimeout(() => {
+        loading.classList.remove('show');
+
+        // Extract friendly display name from email or username
+        let displayName = userid;
+        if (userid.includes('@')) {
+          let part = userid.split('@')[0].replace(/[0-9._-]+/g, ' ').trim();
+          displayName = part ? part.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : userid.split('@')[0];
+        } else {
+          displayName = userid.charAt(0).toUpperCase() + userid.slice(1);
+        }
+
+        // Save session info
+        sessionStorage.setItem('sl_user', JSON.stringify({
+          id: userid,
+          name: displayName,
+          role: userType
+        }));
+
+        // Redirect based on selected account type
+        window.location.href = userType === 'admin' ? 'admin-dashboard.html' : 'user-dashboard.html';
+      }, 600);
+    }
+
+    // ── Quick Demo Autofill ──────────────────────────────
+    function fillDemo(type) {
+      if (type === 'admin') {
+        document.getElementById('type-admin').checked = true;
+        document.getElementById('lf-userid').value = 'admin';
+        document.getElementById('lf-password').value = 'admin123';
+        document.querySelector('.lf-input-ico').className = 'fa-solid fa-id-badge lf-input-ico';
+        document.getElementById('lf-userid').placeholder = 'Enter admin ID or work email';
+      } else {
+        document.getElementById('type-user').checked = true;
+        document.getElementById('lf-userid').value = 'user';
+        document.getElementById('lf-password').value = 'user123';
+        document.querySelector('.lf-input-ico').className = 'fa-solid fa-at lf-input-ico';
+        document.getElementById('lf-userid').placeholder = 'Enter your user ID or email';
+      }
+      document.querySelectorAll('.ut-check').forEach(c => c.style.opacity = '0');
+      document.getElementById('type-' + type).closest('.user-type-card').querySelector('.ut-check').style.opacity = '1';
+    }
+
+    // ── Update icon type on user-type card click ────────
+    document.querySelectorAll('.user-type-card input').forEach(radio => {
+      radio.addEventListener('change', () => {
+        document.querySelectorAll('.ut-check').forEach(c => c.style.opacity = '0');
+        const card = radio.closest('.user-type-card');
+        card.querySelector('.ut-check').style.opacity = '1';
+        // Update input icon
+        const isAdmin = radio.value === 'admin';
+        document.querySelector('.lf-input-ico').className =
+          isAdmin ? 'fa-solid fa-id-badge lf-input-ico' : 'fa-solid fa-at lf-input-ico';
+        document.getElementById('lf-userid').placeholder =
+          isAdmin ? 'Enter admin ID or work email' : 'Enter your user ID or email';
+      });
+    });
+  </script>
+</body>
+</html>
