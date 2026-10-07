@@ -4,17 +4,30 @@
 
 // ── Navbar scroll effect ──────────────────────────────────────
 const navbar = document.getElementById('navbar');
+const navLinks = document.getElementById('nav-links');
+
+function syncNavDropdownTop() {
+  if (window.innerWidth <= 768 && navLinks) {
+    navLinks.style.top = navbar.offsetHeight + 'px';
+  } else if (navLinks) {
+    navLinks.style.top = '';
+  }
+}
+
 window.addEventListener('scroll', () => {
   if (window.scrollY > 60) {
     navbar.classList.add('scrolled');
   } else {
     navbar.classList.remove('scrolled');
   }
+  syncNavDropdownTop();
 });
+
+window.addEventListener('resize', syncNavDropdownTop);
+syncNavDropdownTop();
 
 // ── Hamburger menu ────────────────────────────────────────────
 const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('nav-links');
 hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('open');
   hamburger.classList.toggle('active');
@@ -29,7 +42,7 @@ hamburger.addEventListener('click', () => {
     spans[2].style.transform = '';
   }
 });
-navLinks.querySelectorAll('.nav-link').forEach(link => {
+navLinks.querySelectorAll('.nav-link, .btn-cta').forEach(link => {
   link.addEventListener('click', () => {
     navLinks.classList.remove('open');
     hamburger.classList.remove('active');
@@ -38,6 +51,18 @@ navLinks.querySelectorAll('.nav-link').forEach(link => {
       s.style.opacity = '';
     });
   });
+});
+
+// Close mobile menu when clicking outside navbar
+document.addEventListener('click', (e) => {
+  if (navLinks && navLinks.classList.contains('open') && !navbar.contains(e.target)) {
+    navLinks.classList.remove('open');
+    hamburger.classList.remove('active');
+    hamburger.querySelectorAll('span').forEach(s => {
+      s.style.transform = '';
+      s.style.opacity = '';
+    });
+  }
 });
 
 // ── Smooth scroll for nav links ───────────────────────────────
